@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Perfil de {{ user.username }} {% endblock %}
+
+{% block 'styles' %} {% load static %} {% endblock %}
+
+{% block 'content' %}
+
+<div class="card-profile">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="card-profile-sections">
+
+            <div class="card-profile-sections-left">
+
+                <div>
+                    <img src="{{ user.profile.avatar.url }} " />
+                </div>
+
+                <span>
+                    <label class="small mb-1">Cambiar imagen de perfil</label><br>
+                </span>
+                <span>
+                    {{ profile_form.avatar }}
+                </span>
+
+
+
+            </div>
+
+            <div class="card-profile-sections-rigth">
+                <div class="card-register-content">
+                    {% if user_form.errors %}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <div id="form_errors">
+                            {% for key, value in user_form.errors.items %}
+                            <strong>{{ value }}</strong>
+                            {% endfor %}
+                        </div>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+            
+            
+                    <div class="form-content">
+                        
+                        <div class="form-group">
+                            <br><br>
+                            <div class="container-button">
+                                <a href="{% url 'index' %}">Ir al inicio</a>
+                            </div>
+                            
+                                <label class="label">Nombre:</label>
+                                {{ user_form.first_name }}
+            
+                                <label class="label">Apellido:</label>
+                                {{ user_form.last_name }}
+            
+                                <label class="label">Email:</label>
+                                {{ user_form.email }}
+            
+                                <label class="label">Fecha de Nacimiento</label>
+                                <div class="brithday">
+                                    <div class="day">
+                                        {{ profile_form.day }}
+                                    </div>
+            
+                                    <div class="month">
+                                        {{ profile_form.month }}
+                                    </div>
+            
+                                    <div class="year">
+                                        {{ profile_form.year }}
+                                    </div>
+                                </div>
+            
+                            </div>
+                            <div class="form-group">
+                                <div class="phone">
+                                    <div class="cod">
+                                        <label class="label">Código de área:</label> {{ profile_form.cod_phone }}
+                                    </div>
+                                    <div class="number">
+                                        <label class="label">Teléfono:</label> {{ profile_form.phone }}
+                                    </div>
+                                </div>
+                            </div>
+            
+                            
+            
+                            <div class="container-button">
+                                <button type="submit" class="button">Guardar</button>
+                                <button type="reset" class="button">Reset</button>
+                            </div>
+                            <div class="container-button">
+                                <a href="#">Cambiar contraseña</a><br>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>    
+</div>
+{% endblock %}

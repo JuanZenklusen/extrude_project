@@ -1,0 +1,255 @@
+:root{
+    --primary-color: #0c0038;
+    --hover-links-color: #ff7171;
+    --footer-color: #181818;
+    --font-size-text: 1rem;
+    --time-transitions: .3s;
+}
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'EB Garamond', serif;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: var(--font-size-text);
+}
+
+.hero-image{
+    height: 80vh;
+    background: url(./curso-CAD-1.jpg), black;
+    background-size: cover;
+    background-position: center;
+    padding: 2em;
+    color: white;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    padding-bottom: 1%;
+    padding-right: 3%;
+    transition: var(--time-transitions);
+}
+
+.hero-image h1{
+    font-size: 4rem;
+    margin: 0px;
+    text-shadow: 0px 0px 8px #000000;
+    width: 100%;
+    text-align: right;
+}
+
+.hero-image p{
+    font-size: 2rem;
+    text-shadow: 0px 0px 8px #000;
+    text-align: right;
+}
+
+.menu{
+    height: 40px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.menu div{
+    height: 100%;
+    margin: auto;
+    width: 85vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.menu div a{
+    text-decoration: none;
+    color: inherit;
+    padding-right: 1.2rem;
+    transition: var(--time-transitions);
+}
+
+.menu div a:hover{
+    color: var(--hover-links-color);
+    text-decoration: underline;
+}
+
+.footer{
+    min-height: 100px;
+    background-color: var(--footer-color);
+    color: #ffffff;
+}
+
+.footer div{
+    height: 100%;
+    margin: auto;
+    width: 85vw;
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    flex-direction: column;
+}
+
+.footer div a{
+    text-decoration: none;
+    color: inherit;
+    padding-right: 1rem;
+    transition: var(--time-transitions);
+}
+
+.footer div a:hover{
+    color: var(--hover-links-color);
+}
+
+.card-register{
+    width: 40%;
+    border-radius: 5px;
+    border: 1px solid rgb(175, 175, 175);
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.288);
+}
+
+.card-register-content{
+    width: 90%;
+    min-height: 80vh;
+    margin: auto;
+}
+
+.card-register-content h3{
+    margin: auto;
+    text-align: center;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.label{
+    position: relative;
+    left: 20px;
+    top: 15px;
+    background-color: white;
+    padding: 5px 10px 5px 10px;
+    font-size: .9rem;
+}
+
+.form-group input{
+    padding-top: 13px;
+}
+
+.form-group{
+    width: 100%;
+}
+
+.container-button{
+    width: 100%;
+    display: flex;
+    Justify-content: center;
+}
+
+.button{
+    margin: 1rem;
+    padding: .5rem 1rem;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 5px;
+    transition: var(--time-transitions);
+    border: none;
+}
+
+.button:hover{
+    opacity: .9;
+    color: var(--hover-links-color);
+}
+
+.container-button a{
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--time-transitions);
+}
+
+.container-button a:hover{
+    color: var(--hover-links-color);
+}
+
+.card-profile{
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid rgb(175, 175, 175);
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.288);
+}
+
+.card-profile-sections{
+    display: grid;
+    grid-template-areas: 'left rigth';
+    grid-template-columns: 1fr 2fr;
+    gap: .5rem;
+}
+
+.card-profile-sections-left{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: var(--primary-color);
+    grid-area: 'left';
+    color: #ffffff;
+}
+
+.card-profile-sections-left div{
+    display: flex;
+    justify-content: center;
+    min-height: 320px;
+}
+
+.card-profile-sections-left div img{
+    background-size: cover;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5% 15%;
+    box-shadow: 0px 0px 10px 1px #ffffff;
+}
+
+.card-profile-sections-left span{
+    max-width: 250px;
+}
+
+.card-profile-sections-rigth{
+    grid-area: 'rigth';
+}
+
+.brithday{
+    display: grid;
+    grid-template-areas: 'day month year';
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: .5rem;
+}
+
+.day{
+    grid-area: 'day';
+}
+
+.month{
+    grid-area: 'month';
+}
+
+.year{
+    grid-area: 'year';
+}
+
+.phone{
+    display: grid;
+    grid-template-areas: 'cod number';
+    grid-template-columns: 1fr 2fr;
+    gap: .5rem;
+}
+
+.cod{
+    grid-area: 'cod';
+}
+
+.number{
+    grid-area: 'number';
+}

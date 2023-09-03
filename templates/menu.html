@@ -1,0 +1,20 @@
+<div class="menu">
+
+    {% if user.is_authenticated %}
+    
+    <div>
+        <a href="{% url 'profile' %}">Bienvendo {{ user.username }}</a>
+        <a href="{% url 'logout' %}">Cerrar sesión</a>
+    </div>
+    
+    {% else %}
+    
+    <div>
+        <a href="{% url 'index' %}">Inicio</a>
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <a href="{% url 'create_user' %}">Registrarse</a>
+    </div>
+
+    {% endif %}
+
+</div>
