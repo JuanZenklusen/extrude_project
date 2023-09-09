@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Capacitaciones {% endblock %}
+
+{% block 'content' %}
+
+<p>
+    {{ pricee }}
+</p>
+
+<div class="card-profile">
+    <div class="card-profile-sections">
+    
+        <div class="card-profile-sections-left">
+    
+            <div class="card-profile-sections-left-section">
+                <img src="{{ course.img.url }} " />
+            </div>
+            <h2>{{ course.name }}</h2>
+            <h3>{{ course.payment_installments }} cuotas sin interés </h3> <h3>de AR$ {{ course.price_payment_installments|floatformat:2 }}</h3>
+            <h4>Precio total: AR$ {{ course.price|floatformat:2 }}</h4>
+            <div class="container-button">
+                <a class="btn-info" href="{{ course.link_mp }}">Inscribirme ahora</a>
+            </div>
+                 
+        </div>
+        
+        <div class="card-profile-sections-rigth">
+            <div class="card-profile-sections-rigth-text-course">
+
+                <h5 class="title">Descripción:</h5>
+                <h5 class="text">{{ course.description }}</h5><hr>
+
+                <div class="lessons">
+                    <div class="duration-lesson">
+                        <i class="fa-solid fa-clock svg-color"></i>
+                        <p class="lesson-text">Clases de {{ course.lesson_duration }} </p>
+                    </div>
+                    <div class="frecuency">
+                        <i class="fa-solid fa-calendar-days svg-color"></i>
+                        <p class="lesson-text">{{ course.weekly_frequency }} clases por semana</p>     
+                    </div>
+                    <div class="weeks">
+                        <i class="fa-solid fa-calendar-week svg-color"></i>
+                        <p class="lesson-text">{{ course.duration_in_weeks }}</p>  
+                    </div>
+                </div><hr>
+                <div class="include">
+                    <h5 class="title">Tendrás:</h5>
+                    <h5 class="text">{{ course.text_include }}</h5>
+                </div><hr>
+
+                <div class="requirements">
+                    <h5 class="title">Requisitos:</h5>
+                    <h5 class="text">{{ course.requirements }}</h5>
+                </div><hr>
+                
+                <h5 class="title">Modalidad: {{ course.modality }}</h5>
+
+                <div class="container-button">
+                    <a class="btn-program" href="{{ course.program }}">Consulta el programa del curso</a>
+                </div>
+
+            </div>
+            
+        </div>
+    
+    </div>
+
+
+</div>
+
+{% include 'partials/modules.html' %}
+   
+
+
+{% endblock %}

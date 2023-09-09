@@ -4,6 +4,23 @@
 
 {% block 'content' %}
 
-<h1>estoy en courses.html</h1>
+<div class="container">
+    <div class="container-box">
+        {% for course in courses %}
+        <div class="container-box-card-course">
+            <div class="image-container">
+                <img src="{{ course.img.url }}">
+            </div>
+            <h2>{{ course.name }}</h1>
+            <p>{{ course.description }}</p>
+            <h4>6 Cuotas sin interés de AR$ {{ course.price_payment_installments|floatformat:2 }}</h4>
+            <div class="container-button">
+                <a class="btn-info" href="{% url 'view_course' slug=course.slug %}">Más información...</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
 
 {% endblock %}

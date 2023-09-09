@@ -3,7 +3,9 @@
     --hover-links-color: #ff7171;
     --footer-color: #181818;
     --font-size-text: 1rem;
+    --font-text-color: #181818;
     --time-transitions: .3s;
+    --color-gray:#d4d4d4;
 }
 
 *{
@@ -12,6 +14,11 @@
     font-family: 'EB Garamond', serif;
     font-family: 'Josefin Sans', sans-serif;
     font-size: var(--font-size-text);
+}
+
+html, body{
+    margin: 0px;
+    color: var(--font-text-color);
 }
 
 .hero-image{
@@ -198,14 +205,16 @@
     color: #ffffff;
 }
 
-.card-profile-sections-left div{
+.card-profile-sections-left .card-profile-sections-left-section{
     display: flex;
     justify-content: center;
     min-height: 320px;
 }
 
 .card-profile-sections-left div img{
+    max-width: 300px;
     background-size: cover;
+    object-fit: cover;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     border-radius: 5% 15%;
@@ -252,4 +261,260 @@
 
 .number{
     grid-area: 'number';
+}
+
+.container-box{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container-box-card-course{
+    margin: 2rem auto;
+    width: 500px;
+    height: 640px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    box-shadow: 3px 5px 15px gray;
+    transition: cubic-bezier(0.445, 0.05, 0.55, 0.95) var(--time-transitions);
+    background-color: var(--primary-color);
+}
+
+.container-box-card-course:hover{
+    border: 1px solid var(--primary-color);
+    box-shadow: 1px 2px 20px var(--primary-color);
+}
+
+.container-box-card-course .image-container {
+    width: 100%;
+    height: 300px;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 5px;
+    scale: 1.01;
+}
+
+.container-box-card-course .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid gray;
+    border-radius: 5px;
+}
+
+.container-box-card-course h2{
+    text-align: center;
+    margin: .4rem 0;
+    background-color: var(--primary-color);
+    color: var(--hover-links-color);
+    padding-top: .7rem;
+}
+
+.container-box-card-course p{
+    color: #ffffff;
+    padding: 1rem;
+    height: 140px;
+    text-align: center;
+}
+
+.container-box-card-course h4{
+    color: var(--hover-links-color);
+    text-align: center;
+}
+
+.container-button .btn-info{
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding: .5rem 1rem;
+    background-color: var(--footer-color);
+    border-radius: 8px;
+    color: var(--hover-links-color);
+    text-decoration: none;
+    border: 1px solid var(--hover-links-color);
+    transition: var(--time-transitions);
+}
+
+.container-button .btn-info:hover{
+    color: var(--primary-color);
+    background-color: var(--hover-links-color);
+    scale: 1.1;
+}
+
+.container-button .btn-program{
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding: .5rem 1rem;
+    background-color: var(--hover-links-color);
+    border-radius: 8px;
+    color: var(--footer-color);
+    text-decoration: none;
+    border: 1px solid var(--hover-links-color);
+    transition: var(--time-transitions);
+}
+
+.container-button .btn-program:hover{
+    color: var(--hover-links-color);
+    background-color: var(--primary-color);
+    scale: 1.1;
+}
+
+.card-profile-sections-left h2, h3, h4{
+    text-align: center;
+}
+
+.card-profile-sections-left h2{
+    color: var(--hover-links-color);
+}
+
+.card-profile-sections-left h3{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.container-box-card-course h4{
+    color: var(--hover-links-color);
+}
+
+.card-profile-sections-rigth-text-course{
+    padding: 2rem;
+}
+
+.card-profile-sections-rigth-text-course .title{
+    font-size: 2rem;
+}
+
+.card-profile-sections-rigth-text-course .text{
+    font-size: 1.5rem;
+}
+
+.card-profile-sections-rigth-text-course .modality{
+    text-align: center;
+}
+
+.lessons{
+    display: grid;
+    grid-template-areas: "duration frecuency weeks";
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: .5rem;
+    text-align: center;
+}
+
+.duration-lesson{
+    grid-area: "duration";
+}
+
+.frecuency{
+    grid-area: "frecuency";
+}
+
+.weeks{
+    grid-area: "weeks";
+}
+
+.lesson-text{
+    font-size: 1.3rem;
+}
+
+.svg-color{
+    color: var(--footer-color);
+    font-size: 4rem;
+    padding: .8rem .5rem 1rem .5rem;
+    opacity: .8;
+}
+
+.modules{
+    margin: auto;
+    width: 85%;
+    margin-bottom: 2rem;
+}
+
+.modules .accordion .accordion-item .accordion-header .accordion-button{
+    background-color: var(--primary-color);
+    color: #ffffff;
+    font-size: 1.2rem;
+    padding: 1rem;
+    margin-top: .5rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.accordion, .accordion-item, .accordion-collapse, .accordion-body{
+    border: none;
+}
+
+.modules .accordion .accordion-item .accordion-collapse .accordion-body{
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0;
+    margin: 0;
+}
+
+.lessons-m a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    padding: .4rem 1rem;
+    font-size: 1rem;
+    color: var(--footer-color);
+    margin: 0;
+    transition: var(--time-transitions);
+}
+
+.lessons-m a:hover{
+    background-color: var(--color-gray);
+    box-shadow: 0 0 6px var(--primary-color);
+    scale: 1.005;
+}
+
+.play-lesson{
+    width: 98vw;
+    margin: auto;
+    display: grid;
+    grid-template-areas: "lesson program";
+    grid-template-columns: 3fr 1fr;
+}
+
+.play-lesson .lesson{
+    grid-area: "lesson";
+    min-height: 90vh;
+}
+
+.play-lesson .program{
+    grid-area: "program";
+}
+
+.lesson {
+    width: 100%;
+    max-width: 950px; /* Establece el ancho máximo deseado */
+    margin: 0 auto; /* Centra el contenido en la página */
+}
+
+.video-container {
+    margin-top: 1rem;
+    position: relative;
+    padding-bottom: 56.25%; /* Esto crea una relación de aspecto de 16:9 (para videos de YouTube) */
+    overflow: hidden;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.lesson-text{
+    margin-top: 1rem;
+}
+
+.no-matriculado{
+    display: flex;
+    margin: auto;
+    min-height: 70vh;
+    border: 5px solid green;
+    font-size: 3rem;
+    align-items: center;
+    place-content: center;
 }

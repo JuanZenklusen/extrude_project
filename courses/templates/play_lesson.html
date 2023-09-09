@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} {{ lesson.title }} {% endblock %}
+
+{% block 'content' %}
+<div class="play-lesson">
+    <div class="lesson">
+        <div class="video-container">
+            <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
+        </div>
+        <div class="lesson-text">
+            <h2>Clase {{ lesson.nro_order }}: {{ lesson.title }}</h2>
+        </div>
+    </div>
+    <div class="program">
+        {% include 'partials/modules.html' %}
+    </div>
+</div>
+{% endblock %}

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+from local_settings import LS_DEBUG, LS_ALLOWED_HOSTS, LS_PASSWORD_DB, LS_SECRET_KEY
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9huj7_=(8^d9%i4_9z)ycd4c2h80)foyrczb-g3@&na#r8$bmm'
+SECRET_KEY = LS_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = LS_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = LS_ALLOWED_HOSTS
 
 
 # Application definition
@@ -81,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'extrude_project',
         'USER': 'jzenklusen',
-        'PASSWORD': 'frra35222582',
+        'PASSWORD': LS_PASSWORD_DB,
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

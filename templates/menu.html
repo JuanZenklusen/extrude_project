@@ -3,16 +3,19 @@
     {% if user.is_authenticated %}
     
     <div>
-        <a href="{% url 'profile' %}">Bienvendo {{ user.username }}</a>
-        <a href="{% url 'logout' %}">Cerrar sesión</a>
+        <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>
+        <a href="{% url 'courses' %}"><span class="fa-solid fa-computer">&nbsp</span>Cursos</a>
+        <a href="{% url 'profile' %}"><span class="fa-solid fa-user-gear">&nbsp</span>{{ user.username }} </span></a>
+        <a href="{% url 'logout' %}"><span class="fa-solid fa-right-from-bracket">&nbsp</span>Cerrar sesión</a>
     </div>
     
     {% else %}
     
     <div>
-        <a href="{% url 'index' %}">Inicio</a>
-        <a href="{% url 'login' %}">Iniciar sesión</a>
-        <a href="{% url 'create_user' %}">Registrarse</a>
+        <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>
+        <a href="{% url 'courses' %}"><span class="fa-solid fa-computer">&nbsp</span>Cursos</a>
+        <a href="{% url 'login' %}"><span class="fas fa-user">&nbsp</span>Iniciar sesión</a>
+        <a href="{% url 'create_user' %}"><span class="fa-solid fa-user-plus">&nbsp</span>Registrarse</a>
     </div>
 
     {% endif %}

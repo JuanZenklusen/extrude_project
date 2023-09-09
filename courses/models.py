@@ -10,9 +10,9 @@ import uuid
 class Courses(models.Model):
     name = models.CharField(max_length=60, blank=False, null=False)
     description = models.CharField(max_length=300, blank=False, null=False)
-    price = models.IntegerField(blank=False, null=False, default=1000)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     payment_installments = models.IntegerField(blank=True, null=True, default=1) #cantidad de cuotas
-    price_payment_installments = models.IntegerField(blank=True, null=True, default=1000)
+    price_payment_installments = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     link_mp = models.CharField(max_length=100, blank=True, null=True) #link mercadopago
     program = models.CharField(max_length=300, blank=True, null=True)
     img = models.ImageField(default='course-default.jpg', upload_to='course_images')
@@ -79,7 +79,8 @@ class Lessons(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     subtitle = models.CharField(max_length=500, blank=True, null=True)
     nro_order = models.IntegerField()
-    video = models.CharField(max_length=400, blank=True, null=True)
+    video = models.CharField(max_length=200, blank=True, null=True)
+    document = models.CharField(max_length=200, blank=True, null=True)
     text1 = models.TextField(null=True, blank=True, default="")
     text2 = models.TextField(null=True, blank=True, default="")
     text3 = models.TextField(null=True, blank=True, default="")
@@ -104,3 +105,28 @@ def set_slug_lessons(sender, instance, *args, **kwargs):
         instance.slug = slug
 
 pre_save.connect(set_slug_lessons, sender=Lessons)
+
+
+
+class Commission(models.Model):
+    name = models.CharField(max_length=50, blank=False, null=False, default="")
+    date = models.CharField(max_length=50, blank=False, null=False)
+    teacher = models.CharField(max_length=50, blank=True, null=True)
+    tutor = models.CharField(max_length=50, blank=True, null=True)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f'{self.name} - {self.date}'
+
+
+
+class Matricula(models.Model):
+    commission = models.ForeignKey(Commission, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f'{str(self.id)} - {self.commission.course.name} - {self.user.username}'
