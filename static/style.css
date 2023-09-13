@@ -23,7 +23,7 @@ html, body{
 
 .hero-image{
     height: 80vh;
-    background: url(/media/curso-CAD-1.jpg), black;
+    background: url(/static/curso-CAD-1.jpg), black;
     background-size: cover;
     background-position: center;
     padding: 2em;
