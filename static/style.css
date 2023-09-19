@@ -518,3 +518,15 @@ html, body{
     align-items: center;
     place-content: center;
 }
+
+.featured{
+    background-color: var(--color-gray);
+}
+
+.featured .container .container-box h1{
+    padding-top: 50px;
+    padding-bottom: 20px;
+    margin: auto;
+    font-weight: 800;
+    color: var(--primary-color);
+}

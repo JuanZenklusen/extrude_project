@@ -4,7 +4,7 @@ from .models import Courses, Modules, Lessons, Matricula, Commission
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
               'link_mp', 'program', 'img', 'modality', 'requirements', 'lesson_duration', 'weekly_frequency',
-              'duration_in_weeks', 'course_program', 'text_include')
+              'duration_in_weeks', 'course_program', 'text_include', 'featured')
     list_display = ('name', 'id', 'price', 'slug', 'created_at', 'modified_at')
     search_fields = ('name', 'description', 'price', 'duration_in_weeks')
     list_filter = ('name', 'modality')

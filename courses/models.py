@@ -23,6 +23,7 @@ class Courses(models.Model):
     duration_in_weeks = models.CharField(max_length=50, blank=True, null=True,) #duracion en semanas
     course_program = models.CharField(max_length=300, blank=True, null=True,) #link drive del programa del curso
     text_include = models.TextField(max_length=1500, blank=True, null=True,) #lo que incluye el curso
+    featured = models.BooleanField(default=False)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

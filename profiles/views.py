@@ -9,11 +9,13 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.views import PasswordChangeView
+from django.shortcuts import get_object_or_404
+from courses.models import Courses
 
 
 def index(request):
-
-    return render(request, 'index.html', {})
+    featured_courses = Courses.objects.filter(featured=True)
+    return render(request, 'index.html', {'featured_courses': featured_courses})
 
 
 class RegisterView(View):

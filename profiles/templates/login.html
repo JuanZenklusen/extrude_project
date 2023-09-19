@@ -26,13 +26,6 @@
     <form method="POST">
         {% csrf_token %}
 
-        {% comment %}<a href="#" class="btn btn-link btn-lg active btn-block">Sign in
-            with GitHub</a>
-        <a href="#" class="btn btn-link btn-lg active btn-block">Sign in with Google</a>
-        <hr>
-        <p class="text-center"><strong>OR</strong></p>
-        <hr>{% endcomment %}
-
         <div class="form-group">
             <label class="label">Nombre de usuario</label>
             {{ form.username }}
