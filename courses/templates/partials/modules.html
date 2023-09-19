@@ -7,7 +7,7 @@
                     Módulo {{ module.nro_order }}: {{ module.title }}
                 </button>
             </h2>
-            <div id="collapse{{ module.nro_order }}" class="accordion-collapse collapse" aria-labelledby="heading{{ module.nro_order }}" data-bs-parent="#accordionExample">
+            <div id="collapse{{ module.nro_order }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ module.nro_order }}" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     {% for lesson in module.lessons_set.all %}
                     <div class="lessons-m">
