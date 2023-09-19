@@ -7,3 +7,7 @@ fabfile.py
 course_images/
 
 profile_images/
+
+*.pyc
+
+__pycache__/
