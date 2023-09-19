@@ -1,8 +1,12 @@
 env/
 
-course_images/
-
-profile_images/
+extrude_project/
+    media/
+        course_images/
+        
+extrude_project/
+    media/        
+        profile_images/
 
 local_settings.py
 
