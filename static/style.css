@@ -523,10 +523,11 @@ html, body{
     background-color: var(--color-gray);
 }
 
-.featured .container .container-box h1{
+.featured .container .container-box .featured-h1{
     padding-top: 50px;
     padding-bottom: 20px;
     margin: auto;
     font-weight: 800;
     color: var(--primary-color);
+    font-size: 3rem;
 }
