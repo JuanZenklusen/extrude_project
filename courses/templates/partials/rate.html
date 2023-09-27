@@ -1,0 +1,13 @@
+{% if not user_rating %}
+<form method="POST" action="{% url 'play_lesson' course.slug lesson.slug %}">
+    {% csrf_token %}
+    <div class="rate-module">
+        <label for="customRange2" class="form-label">Calificar: Módulo {{ lesson.module.nro_order }} - {{ lesson.module.title }}</label>
+        <input type="range" class="form-range" min="0" max="5" id="customRange2" name="rating">
+        <h1 id="rangeValue">-</h1>
+        <button type="submit">Guardar Calificación</button>
+    </div>
+</form>
+{% else %}
+<p>Ya has calificado este módulo con {{ user_rating.rating }}.</p>
+{% endif %}

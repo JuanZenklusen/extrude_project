@@ -391,6 +391,14 @@ html, body{
     text-align: center;
 }
 
+
+.card .card-header{
+    background-color: var(--primary-color);
+    color: var(--hover-links-color);
+    font-size: 2rem;
+}
+
+
 .lessons{
     display: grid;
     grid-template-areas: "duration frecuency weeks";
@@ -530,4 +538,22 @@ html, body{
     font-weight: 800;
     color: var(--primary-color);
     font-size: 3rem;
+}
+
+.rate-module{
+    margin-top: 8px;
+    width: 100%;
+    background-color: var(--footer-color);
+    opacity: .7;
+    color: var(--color-gray);
+    padding: 1rem;
+    border-radius: 10px;
+    transition: var(--time-transitions);
+    text-align: center;
+}
+
+.rate-module:hover{
+    opacity: 1;
+    background-color: var(--primary-color);
+    color: var(--hover-links-color);
 }

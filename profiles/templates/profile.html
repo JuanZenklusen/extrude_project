@@ -107,4 +107,28 @@
         </div>
     </form>    
 </div>
+
+{% if matriculas %}
+    {% for matricula in matriculas %}
+    <div class="container">
+        <h1>Tus cursos: </h1>
+        <div class="card">
+            <div class="card-header">
+            {{ matricula.commission.course }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <div class="container-button">
+                    <a class="btn-info" href="{% url 'view_course' slug=matricula.commission.course.slug %}">Ir al curso</a>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>aun no te has matriculado a ningun curso</p>
+{% endif %}
+
 {% endblock %}

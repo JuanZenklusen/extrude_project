@@ -8,23 +8,22 @@ import uuid
 
 
 class Courses(models.Model):
-    name = models.CharField(max_length=60, blank=False, null=False)
-    description = models.CharField(max_length=300, blank=False, null=False)
-    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    name = models.CharField(max_length=60, blank=False, null=False) #nombre del curso
+    description = models.CharField(max_length=300, blank=False, null=False) #descripción del curso
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True) #precio total
     payment_installments = models.IntegerField(blank=True, null=True, default=1) #cantidad de cuotas
-    price_payment_installments = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    price_payment_installments = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True) #precio de la cuota
     link_mp = models.CharField(max_length=100, blank=True, null=True) #link mercadopago
-    program = models.CharField(max_length=300, blank=True, null=True)
-    img = models.ImageField(default='course-default.jpg', upload_to='course_images')
+    program = models.CharField(max_length=300, blank=True, null=True) #link programa del cusro
+    img = models.ImageField(default='course-default.jpg', upload_to='course_images') #miniatura del curso
     modality = models.CharField(max_length=50, blank=True, null=True,) #clases online o asincrónicas
     requirements = models.TextField(max_length=1500, blank=True, null=True,) #requisitos
     lesson_duration = models.CharField(max_length=20, blank=True, null=True,) #duracion de cada clase en horas
     weekly_frequency = models.CharField(max_length=1, blank=True, null=True,) #cuantas clases por semana
     duration_in_weeks = models.CharField(max_length=50, blank=True, null=True,) #duracion en semanas
-    course_program = models.CharField(max_length=300, blank=True, null=True,) #link drive del programa del curso
     text_include = models.TextField(max_length=1500, blank=True, null=True,) #lo que incluye el curso
-    featured = models.BooleanField(default=False)
-    slug = models.SlugField(null=False, blank=False, unique=True)
+    featured = models.BooleanField(default=False) #Aparece o no en destacados?
+    slug = models.SlugField(null=False, blank=False, unique=True) #slug para el link, se genera automáticamente
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -49,10 +48,10 @@ pre_save.connect(set_slug_courses, sender=Courses)
 
 
 class Modules(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False)
-    subtitle = models.CharField(max_length=50, blank=True, null=True)
-    nro_order = models.IntegerField()
-    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, blank=False, null=False) #titulo del módulo
+    subtitle = models.CharField(max_length=50, blank=True, null=True) #Subtitulo, no es un campo tan importante
+    nro_order = models.IntegerField() #Numero de orden de módulo
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE) #Llave foranea al curso que pertenece
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -77,14 +76,14 @@ pre_save.connect(set_slug_modules, sender=Modules)
 
 
 class Lessons(models.Model):
-    title = models.CharField(max_length=200, blank=False, null=False)
-    subtitle = models.CharField(max_length=500, blank=True, null=True)
-    nro_order = models.IntegerField()
-    video = models.CharField(max_length=200, blank=True, null=True)
-    document = models.CharField(max_length=200, blank=True, null=True)
-    text1 = models.TextField(null=True, blank=True, default="")
-    text2 = models.TextField(null=True, blank=True, default="")
-    text3 = models.TextField(null=True, blank=True, default="")
+    title = models.CharField(max_length=200, blank=False, null=False) #titulo de la clase
+    subtitle = models.CharField(max_length=500, blank=True, null=True) #subtitulo
+    nro_order = models.IntegerField() #numero de orden de clase
+    video = models.CharField(max_length=200, blank=True, null=True) #Link de video
+    document = models.CharField(max_length=200, blank=True, null=True) #Link drive de archivos de la clase
+    text1 = models.TextField(null=True, blank=True, default="") #texto 1
+    text2 = models.TextField(null=True, blank=True, default="") #texto 2
+    text3 = models.TextField(null=True, blank=True, default="") #texto 3
     module = models.ForeignKey(Modules, on_delete=models.CASCADE)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -131,3 +130,29 @@ class Matricula(models.Model):
     
     def __str__(self):
         return f'{str(self.id)} - {self.commission.course.name} - {self.user.username}'
+    
+
+
+class ModuleRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # El usuario que califica el módulo
+    module = models.ForeignKey(Modules, on_delete=models.CASCADE)  # El módulo que se está calificando
+    rating = models.PositiveSmallIntegerField(default=0, choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])  # La calificación de 1 a 5
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'module']  # Un usuario solo puede calificar un módulo una vez
+
+    def __str__(self):
+        return self.rating
+    
+    '''def save(self, *args, **kwargs):
+        # Verifica si el usuario ya ha calificado este módulo antes de guardar
+        existing_rating = ModuleRating.objects.filter(user=self.user, module=self.module).first()
+        if existing_rating:
+            # Actualiza la calificación si el usuario ya había calificado este módulo
+            existing_rating.rating = self.rating
+            existing_rating.save()
+        else:
+            super(ModuleRating, self).save(*args, **kwargs)'''
+

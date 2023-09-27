@@ -9,9 +9,9 @@ class Profile(models.Model):
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     cod_phone = models.CharField(max_length=5, null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
-    day = models.IntegerField( null=True, blank=True,)
-    month = models.IntegerField( null=True, blank=True,)
-    year = models.IntegerField( null=True, blank=True,)
+    day = models.IntegerField(null=True, blank=True,)
+    month = models.IntegerField(null=True, blank=True,)
+    year = models.IntegerField(null=True, blank=True,)
 
     def __str__(self):
         return self.user.username

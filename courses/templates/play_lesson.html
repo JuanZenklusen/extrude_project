@@ -5,6 +5,7 @@
 {% block 'content' %}
 <div class="play-lesson">
     <div class="lesson">
+        
         <div class="video-container">
             <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
         </div>
@@ -13,7 +14,22 @@
         </div>
     </div>
     <div class="program">
+        <div class="rate">
+            {% include 'partials/rate.html' %}
+        </div>
         {% include 'partials/modules.html' %}
     </div>
 </div>
+{% endblock %}
+
+{% block 'scripts' %}
+<script>
+    const rangeInput = document.getElementById("customRange2");
+    const rangeValue = document.getElementById("rangeValue");
+
+    rangeInput.addEventListener("input", () => {
+        const selectedValue = rangeInput.value;
+        rangeValue.textContent = selectedValue;
+    });
+</script>
 {% endblock %}
