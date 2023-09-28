@@ -146,13 +146,3 @@ class ModuleRating(models.Model):
     def __str__(self):
         return self.rating
     
-    '''def save(self, *args, **kwargs):
-        # Verifica si el usuario ya ha calificado este módulo antes de guardar
-        existing_rating = ModuleRating.objects.filter(user=self.user, module=self.module).first()
-        if existing_rating:
-            # Actualiza la calificación si el usuario ya había calificado este módulo
-            existing_rating.rating = self.rating
-            existing_rating.save()
-        else:
-            super(ModuleRating, self).save(*args, **kwargs)'''
-

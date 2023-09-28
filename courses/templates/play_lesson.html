@@ -5,14 +5,27 @@
 {% block 'content' %}
 <div class="play-lesson">
     <div class="lesson">
-        
-        <div class="video-container">
-            <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
-        </div>
+
         <div class="lesson-text">
             <h2>Clase {{ lesson.nro_order }}: {{ lesson.title }}</h2>
         </div>
+
+        <div class="video-container">
+            <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
+        </div>
+
+        <hr>
+
+        <div class="complete-lesson">
+            {% if next_lesson %}
+                <p>Lección siguiente: <a href="{% url 'play_lesson' course.slug next_lesson.slug %}">{{ next_lesson.title }}</a></p>
+            {% else %}
+                <p>No hay más lecciones en este curso.</p>
+            {% endif %}
+        </div>
+
     </div>
+
     <div class="program">
         <div class="rate">
             {% include 'partials/rate.html' %}
