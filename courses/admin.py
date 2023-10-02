@@ -36,9 +36,41 @@ class CommissionAdmin(admin.ModelAdmin):
 
 admin.site.register(Commission, CommissionAdmin)
 
-
 class MatriculaAdmin(admin.ModelAdmin):
-    fields = ('commission', 'user')
-    list_display = ('__str__', 'id')
+    list_display = ('id', 'commission', 'user', 'last_lesson', 'modified_at')
+    list_filter = ('commission', 'user', 'created_at', 'modified_at')
+    search_fields = ('id', 'user__username', 'commission__course__name')
+    filter_horizontal = ('lessons_viewed',)
+    readonly_fields = ('last_lesson', 'lessons_viewed', 'created_at', 'modified_at') 
+
+    def last_lesson_info(self, obj):
+        if obj.last_lesson is None:
+            return "Aún no has visto ninguna lección"
+        return f"Módulo: {obj.last_lesson.module.nro_order} - Clase: {obj.last_lesson.nro_order} - {obj.last_lesson.title}"
+    
+    last_lesson_info.short_description = 'Last Lesson'
 
 admin.site.register(Matricula, MatriculaAdmin)
+
+
+'''
+En caso de que quiera modificar las clases vistas
+
+class MatriculaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'commission', 'user', 'last_lesson', 'modified_at')
+    list_filter = ('commission', 'user', 'created_at', 'modified_at')
+    search_fields = ('id', 'user__username', 'commission__course__name')
+    filter_horizontal = ('lessons_viewed',)
+    readonly_fields = ('last_lesson', 'created_at', 'modified_at')
+    
+    # Elimina 'id' de fields o fieldsets
+    fields = ('commission', 'user', 'last_lesson', 'modified_at', 'lessons_viewed')
+    
+    def last_lesson_info(self, obj):
+        if obj.last_lesson is None:
+            return "Aún no has visto ninguna lección"
+        return f"Módulo: {obj.last_lesson.module.nro_order} - Clase: {obj.last_lesson.nro_order} - {obj.last_lesson.title}"
+    
+    last_lesson_info.short_description = 'Last Lesson'
+
+admin.site.register(Matricula, MatriculaAdmin)'''

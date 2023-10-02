@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import get_object_or_404
-from courses.models import Courses, Matricula
+from courses.models import Courses, Matricula, Modules, Lessons
+from courses.calc import calcular_porcentaje_avance
+from django.db.models import Count
 
 
 def index(request):
@@ -79,9 +81,20 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     success_url = reverse_lazy('users-home')
 
 
+
 @login_required
 def profile(request):
     matriculas = Matricula.objects.filter(user=request.user)
+
+    for matricula in matriculas:
+        if matricula.last_lesson is None:
+            # Si last_lesson es None, asignar la primera lección del primer módulo
+            first_module = Modules.objects.filter(course=matricula.commission.course).order_by('nro_order').first()
+            if first_module:
+                first_lesson = Lessons.objects.filter(module=first_module).order_by('nro_order').first()
+                matricula.last_lesson = first_lesson
+                matricula.save()
+
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -95,10 +108,13 @@ def profile(request):
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
+    # Calcular el porcentaje de avance
+    for matricula in matriculas:
+        total_lessons = Lessons.objects.filter(module__course=matricula.commission.course).count()
+        lessons_viewed = matricula.lessons_viewed.count()
+        if total_lessons > 0:
+            matricula.advance_percentage = (lessons_viewed / total_lessons) * 100
+        else:
+            matricula.advance_percentage = 0
+
     return render(request, 'profile.html', {'user_form': user_form, 'profile_form': profile_form, 'matriculas': matriculas})
-
-
-class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'perfil/change_password.html'
-    success_message = "Contraseña guardada exitosamente"
-    success_url = reverse_lazy('users-home')

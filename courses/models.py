@@ -90,7 +90,7 @@ class Lessons(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.title
+        return f'{self.id} - {self.title}'
 
 
 def set_slug_lessons(sender, instance, *args, **kwargs):
@@ -125,6 +125,8 @@ class Commission(models.Model):
 class Matricula(models.Model):
     commission = models.ForeignKey(Commission, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    last_lesson = models.ForeignKey(Lessons, on_delete=models.SET_NULL, blank=True, null=True, related_name='last_lesson_for_matricula')
+    lessons_viewed = models.ManyToManyField(Lessons, blank=True, related_name='matriculas_viewed')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     

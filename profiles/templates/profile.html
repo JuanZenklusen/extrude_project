@@ -109,18 +109,23 @@
 </div>
 
 {% if matriculas %}
+<h1>Tus cursos: </h1>
     {% for matricula in matriculas %}
     <div class="container">
-        <h1>Tus cursos: </h1>
         <div class="card">
             <div class="card-header">
             {{ matricula.commission.course }}
             </div>
+            <progress value="{{ matricula.advance_percentage|floatformat:0 }}" max="100"></progress>
             <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                {{ matricula.advance_percentage|floatformat:0 }}
+                <h5 class="card-title">Última clase que miraste: Módulo: 
+                    {{ matricula.last_lesson.module.nro_order }} 
+                    - Clase: {{ matricula.last_lesson.nro_order }} 
+                    - {{ matricula.last_lesson.title }}</h5>
                 <div class="container-button">
-                    <a class="btn-info" href="{% url 'view_course' slug=matricula.commission.course.slug %}">Ir al curso</a>
+                    <a class="btn-info" 
+                    href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a>
                 </div>
             </div>
         </div>

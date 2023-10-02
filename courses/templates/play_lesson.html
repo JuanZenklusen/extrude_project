@@ -3,11 +3,11 @@
 {% block 'title' %} {{ lesson.title }} {% endblock %}
 
 {% block 'content' %}
+<progress value="{{ advance|floatformat:0 }}" max="100"></progress>
 <div class="play-lesson">
     <div class="lesson">
-
         <div class="lesson-text">
-            <h2>Clase {{ lesson.nro_order }}: {{ lesson.title }}</h2>
+            <h2>Módulo {{ lesson.module.nro_order }}- Clase {{ lesson.nro_order }}: {{ lesson.title }}</h2>
         </div>
 
         <div class="video-container">
