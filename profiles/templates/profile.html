@@ -118,7 +118,6 @@
             </div>
             <progress value="{{ matricula.advance_percentage|floatformat:0 }}" max="100"></progress>
             <div class="card-body">
-                {{ matricula.advance_percentage|floatformat:0 }}
                 <h5 class="card-title">Última clase que miraste: Módulo: 
                     {{ matricula.last_lesson.module.nro_order }} 
                     - Clase: {{ matricula.last_lesson.nro_order }} 

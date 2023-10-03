@@ -558,19 +558,40 @@ html, body{
     color: var(--hover-links-color);
 }
 
-progress {
+progress{
     padding: 0;
     margin: 0;
-    width: 100%; /* Ancho completo de la barra de progreso */
-    height: 16px; /* Altura de la barra de progreso */
-    background-color: var(--footer-color); /* Color de fondo de la barra */
+    width: 100%;
+    height: 16px; 
+    background-color: var(--footer-color);
 }
   
-/* Estilo para el llenado de la barra de progreso */
 progress::-webkit-progress-value {
     background-color: var(--hover-links-color);
 }
 
 progress::-moz-progress-bar {
     background-color: var(--primary-color);
+}
+
+.complete-lesson{
+    width: 100%;
+    text-align: right;
+    font-size: var(--font-size-text);
+    transition: var(--time-transitions);
+}
+
+.complete-lesson a{
+    text-decoration: none;
+    color: var(--color-gray);
+    border: 1px solid var(--hover-links-color);
+    padding: .8rem;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    transition: var(--time-transitions);
+}
+
+.complete-lesson a:hover{
+    background-color: var(--hover-links-color);
+    color: var(--primary-color);
 }
