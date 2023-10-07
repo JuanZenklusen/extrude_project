@@ -3,15 +3,23 @@
         {% for module in modules %}
         <div class="accordion-item">
             <h2 class="accordion-header" id="heading{{ module.nro_order }}">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ module.nro_order }}" aria-expanded="true" aria-controls="collapse{{ module.nro_order }}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#collapse{{ module.nro_order }}" aria-expanded="true" 
+                aria-controls="collapse{{ module.nro_order }}">
                     Módulo {{ module.nro_order }}: {{ module.title }}
                 </button>
             </h2>
-            <div id="collapse{{ module.nro_order }}" class="accordion-collapse collapse show" aria-labelledby="heading{{ module.nro_order }}" data-bs-parent="#accordionExample">
+            <div id="collapse{{ module.nro_order }}" class="accordion-collapse collapse show" 
+            aria-labelledby="heading{{ module.nro_order }}" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     {% for lesson in module.lessons_set.all %}
                     <div class="lessons-m">
-                        <a href="{% url 'play_lesson' slug=module.course.slug slug_l=lesson.slug %}">Clase {{ lesson.nro_order }} <br> >> {{ lesson.title }}</a>
+                        <a 
+                            {% if lesson.title == title_lesson %}
+                                style="color: var(--hover-links-color); font-weight: 800;"
+                            {% endif %}
+                        href="{% url 'play_lesson' slug=module.course.slug slug_l=lesson.slug %}">
+                        Clase {{ lesson.nro_order }} <br> >> {{ lesson.title }}</a>
                     </div>
                     {% endfor %}
                 </div>

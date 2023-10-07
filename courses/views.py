@@ -26,6 +26,8 @@ def view_course(request, slug):
 def play_lesson(request, slug, slug_l):
     course = get_object_or_404(Courses, slug=slug)
     lesson = get_object_or_404(Lessons, slug=slug_l)
+    title_lesson = lesson.title
+    print(title_lesson)
     matricula = Matricula.objects.filter(user=request.user, commission__course=course)
     advance = calcular_porcentaje_avance(matricula.first(), course)
 
@@ -66,7 +68,8 @@ def play_lesson(request, slug, slug_l):
 
     return render(request, 'play_lesson.html', {'course': course, 
                                                 'modules': modules, 
-                                                'lesson': lesson, 
+                                                'lesson': lesson,
+                                                'title_lesson': title_lesson, 
                                                 'user_rating': user_rating, 
                                                 'cantidad_modulos': cantidad_modulos,
                                                 'next_lesson': next_lesson,
