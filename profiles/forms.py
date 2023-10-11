@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm, DateInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-from .models import Profile
+from .models import Profile, Contact
 
 
 class RegisterForm(UserCreationForm):
@@ -50,3 +50,15 @@ class UpdateProfileForm(forms.ModelForm):
         model = Profile
         fields = ['avatar', 'cod_phone', 'phone', 'day', 'month', 'year']
 
+
+
+class ContactForm(forms.ModelForm):
+    name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control form-control-transparent', 'autocomplete': 'off'}))
+    phone = forms.CharField(max_length=18, required=True, widget=forms.TextInput(attrs={'class': 'form-control form-control-transparent', 'autocomplete': 'off'}))
+    email = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control form-control-transparent', 'autocomplete': 'off'}))
+    subject = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'class': 'form-control form-control-transparent', 'autocomplete': 'off'}))
+    consult = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control form-control-transparent', 'rows': 5, 'style': 'height: 200px', 'autocomplete': 'off'}), required=True, max_length=500)
+
+    class Meta:
+        model = Contact
+        fields = ['name', 'phone', 'email', 'subject', 'consult']

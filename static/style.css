@@ -529,10 +529,6 @@ html, body{
     place-content: center;
 }
 
-.featured{
-    background-color: var(--color-gray);
-}
-
 .featured .container .container-box .featured-h1{
     padding-top: 50px;
     padding-bottom: 20px;
@@ -598,4 +594,46 @@ progress::-moz-progress-bar {
     scale: 1.03;
     background-color: var(--hover-links-color);
     color: var(--primary-color);
+}
+
+.contact{
+    background: rgb(46,54,62);
+    background: linear-gradient(0deg, rgba(46,54,62,1) 0%, rgba(79,97,116,1) 100%);
+}
+
+.form-control-transparent {
+    background-color: rgba(255, 255, 255);
+    border: 1px solid #ccc;
+}
+
+._required{
+    color: rgb(218, 0, 0);
+    font-weight: 800;
+}
+
+#whatsapp-button {
+    opacity: .4;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    transition: var(--time-transitions);
+}
+
+#whatsapp-button:hover{
+    opacity: 1;
+    scale: 1.2;
+}
+
+#whatsapp-button img {
+    height: 60px;
+    width: 60px;
+}
+
+input.form-control:-webkit-autofill,
+input.form-control:-webkit-autofill:hover,
+input.form-control:-webkit-autofill:focus {
+    background-color: transparent !important;
+    box-shadow: 0 0 0px 1000px white inset !important;
+    /* Cambia el color de fondo y la sombra a tus preferencias */
 }

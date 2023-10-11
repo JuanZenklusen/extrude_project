@@ -1,0 +1,40 @@
+<div class="contact">
+    <br><br>
+    <form method="post" onsubmit="return validarFormulario()">
+        {% csrf_token %}
+        <div class="container">
+            <h1 style="color: #fff;">Contacto</h1>
+            <div class="row g-3">
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        {{ form.name }}
+                        <label for="floatingInput">Nombre<span class="_required"> *</span></label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        {{ form.phone }}
+                        <label for="floatingInput">Teléfono<span class="_required"> *</span></label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating mb-3">
+                        {{ form.email }}
+                        <label for="floatingInput">Correo Electrónico<span class="_required"> *</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.subject }}
+                <label for="floatingInput">Asunto<span class="_required"> *</span></label>
+            </div>
+            <div class="form-floating mb-3">
+                {{ form.consult }}
+                <label for="floatingTextarea2">Comentario y/o consultas<span class="_required"> *</span></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </form>
+    <br><br>
+</div>
+

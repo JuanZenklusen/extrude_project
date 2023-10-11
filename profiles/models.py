@@ -25,3 +25,16 @@ class Profile(models.Model):
             new_img = (300, 300)
             img.thumbnail(new_img)
             img.save(self.avatar.path)
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=50, blank=False, null=False)
+    phone = models.CharField(max_length=18, blank=False, null=False)
+    email = models.EmailField(blank=False, null=False)
+    subject = models.CharField(max_length=150, blank=False, null=False)
+    consult = models.CharField(max_length=500, blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.name} - {self.subject} - {self.consult}'

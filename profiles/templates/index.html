@@ -13,4 +13,34 @@
 
 {% include 'partials/featured.html' %}
 
+{% include 'partials/contact.html' %}
+
+<div id="whatsapp-button">
+    <a href="https://api.whatsapp.com/send?phone=543492311561" target="_blank">
+        <img src="/static/whatsapp-logo-png-0.png" alt="WhatsApp" />
+    </a>
+</div>
+
+{% endblock %}
+
+{% block 'scripts' %}
+    <script>
+        function validarFormulario() {
+            // Obtenemos el valor del campo de correo electrónico
+            var emailInput = document.getElementById('id_email');
+            var emailValue = emailInput.value;
+        
+            // Expresión regular para validar direcciones de correo electrónico
+            var emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
+        
+            // Validamos el correo electrónico
+            if (!emailRegex.test(emailValue)) {
+                alert('Por favor, ingrese una dirección de correo electrónico válida.');
+                return false; // Evita que el formulario se envíe
+            }
+        
+            return true; // Permite que el formulario se envíe si la validación pasa
+        }
+    </script>
+    
 {% endblock %}
