@@ -32,7 +32,8 @@ def play_lesson(request, slug, slug_l):
     advance = calcular_porcentaje_avance(matricula.first(), course)
 
     if not matricula.exists():
-        return redirect('no_matriculado')  # Redirige al usuario a la página de inicio, ajusta el nombre de la vista según tu configuración
+        return redirect('no_matriculado')  # Redirige al usuario a la página de inicio, 
+                                           # ajusta el nombre de la vista según tu configuración
 
     modules = Modules.objects.filter(course=course).order_by('nro_order')
 

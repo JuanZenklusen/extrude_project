@@ -1,0 +1,7 @@
+{% if lesson.class_materials is not None and lesson.class_materials != "" %}
+
+    <div class="lesson-text">
+        <a class="btn btn-dark" href="{{ lesson.class_materials }}" target="_blank">Ver recursos de la clase</a>
+    </div>
+
+{% endif %}

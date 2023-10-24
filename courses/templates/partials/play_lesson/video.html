@@ -1,0 +1,7 @@
+{% if lesson.video is not None and lesson.video != "" %}
+
+    <div class="video-container">
+        <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
+    </div>
+
+{% endif %}

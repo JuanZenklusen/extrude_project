@@ -84,6 +84,7 @@ class Lessons(models.Model):
     text1 = models.TextField(null=True, blank=True, default="") #texto 1
     text2 = models.TextField(null=True, blank=True, default="") #texto 2
     text3 = models.TextField(null=True, blank=True, default="") #texto 3
+    class_materials = models.CharField(max_length=200, blank=True, null=True) #para agregar un link de drive que contenga powerpoints, excels, entre otros
     module = models.ForeignKey(Modules, on_delete=models.CASCADE)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

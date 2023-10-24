@@ -10,11 +10,17 @@
             <h2>Módulo {{ lesson.module.nro_order }}- Clase {{ lesson.nro_order }}: {{ lesson.title }}</h2>
         </div>
 
-        <div class="video-container">
-            <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
-        </div>
+        {% include 'partials/play_lesson/subtitle.html' %}
 
-        <hr>
+        {% include 'partials/play_lesson/video.html' %}
+
+        {% include 'partials/play_lesson/class_materials.html' %}
+
+        {% include 'partials/play_lesson/text1.html' %}
+
+        {% include 'partials/play_lesson/text2.html' %}
+
+        {% include 'partials/play_lesson/text3.html' %}
 
         <div class="complete-lesson">
             {% if next_lesson %}
