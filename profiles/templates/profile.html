@@ -130,7 +130,7 @@
                 <h5 class="card-title">Última clase que miraste: Módulo: 
                     {{ matricula.last_lesson.module.nro_order }} 
                     - Clase: {{ matricula.last_lesson.nro_order }} 
-                    - {{ matricula.last_lesson.title }}</h5> {{ matricula.commission.base_cert }}
+                    - {{ matricula.last_lesson.title }}</h5>
                 <div class="container-button">
                     <a class="btn-info" 
                     href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a> &nbsp; &nbsp;
