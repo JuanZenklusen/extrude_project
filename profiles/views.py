@@ -162,8 +162,12 @@ def generate_cert(request, slug):
 def view_cert(request, slug):
     if request.user.is_authenticated:
         cert = get_object_or_404(Matricula, slug=slug)
-        return render(request, 'view_cert.html', {'cert': cert})
+
+        if request.user == cert.user:
+            return render(request, 'view_cert.html', {'cert': cert})
+        
+        else:
+            return redirect('profile')
 
     else:
         return redirect('profile')
-
