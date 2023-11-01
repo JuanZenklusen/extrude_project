@@ -31,7 +31,7 @@ admin.site.register(Lessons, LessonsAdmin)
 
 
 class CommissionAdmin(admin.ModelAdmin):
-    fields = ('name', 'date', 'teacher', 'tutor', 'course')
+    fields = ('name', 'date', 'teacher', 'tutor', 'base_cert', 'course')
     list_display = ('__str__', 'id')
 
 admin.site.register(Commission, CommissionAdmin)
@@ -41,7 +41,7 @@ class MatriculaAdmin(admin.ModelAdmin):
     list_filter = ('commission', 'user', 'created_at', 'modified_at')
     search_fields = ('id', 'user__username', 'commission__course__name')
     filter_horizontal = ('lessons_viewed',)
-    readonly_fields = ('last_lesson', 'lessons_viewed', 'created_at', 'modified_at') 
+    readonly_fields = ('last_lesson', 'lessons_viewed', 'slug', 'created_at', 'modified_at') 
 
     def last_lesson_info(self, obj):
         if obj.last_lesson is None:
@@ -52,9 +52,8 @@ class MatriculaAdmin(admin.ModelAdmin):
 
 admin.site.register(Matricula, MatriculaAdmin)
 
-
 '''
-En caso de que quiera modificar las clases vistas
+#En caso de que quiera modificar las clases vistas
 
 class MatriculaAdmin(admin.ModelAdmin):
     list_display = ('id', 'commission', 'user', 'last_lesson', 'modified_at')
@@ -73,4 +72,5 @@ class MatriculaAdmin(admin.ModelAdmin):
     
     last_lesson_info.short_description = 'Last Lesson'
 
-admin.site.register(Matricula, MatriculaAdmin)'''
+admin.site.register(Matricula, MatriculaAdmin)
+'''

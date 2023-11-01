@@ -114,6 +114,7 @@ class Commission(models.Model):
     date = models.CharField(max_length=50, blank=False, null=False)
     teacher = models.CharField(max_length=50, blank=True, null=True)
     tutor = models.CharField(max_length=50, blank=True, null=True)
+    base_cert = models.ImageField(default='base_cert.png', upload_to='base_cert')
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -128,12 +129,28 @@ class Matricula(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_lesson = models.ForeignKey(Lessons, on_delete=models.SET_NULL, blank=True, null=True, related_name='last_lesson_for_matricula')
     lessons_viewed = models.ManyToManyField(Lessons, blank=True, related_name='matriculas_viewed')
+    cert_emited = models.BooleanField(default=False, blank=False, null=False)
+    name_cert = models.CharField(max_length=100, blank=True, null=True, default="")
+    date_cert_emited = models.DateTimeField(null=True, blank=True)
+    slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'{str(self.id)} - {self.commission.course.name} - {self.user.username}'
     
+def set_slug_matricula(sender, instance, *args, **kwargs):
+    if instance.user.username and not instance.slug:
+        slug = slugify(instance.user.username)
+
+        while Matricula.objects.filter(slug=slug).exists():
+            slug = slugify(
+                '{}-{}'.format(instance.user.username, str(uuid.uuid4())[:8])
+            )
+
+        instance.slug = slug
+
+pre_save.connect(set_slug_matricula, sender=Matricula)
 
 
 class ModuleRating(models.Model):

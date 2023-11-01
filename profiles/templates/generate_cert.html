@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Cenerar certificado {% endblock %}
+
+{% block 'styles' %} {% load static %} {% endblock %}
+
+{% block 'content' %}
+
+    <div class="container text-center">
+
+        {% if matricula_obj.cert_emited != True %}
+
+        <h1 class="mt-5">¡¡Felicitaciones por este nuevo logro!!</h1>
+
+        <div style="width: 100%;">
+            <img style="width: 30vw; border: 3px solid rgb(0, 0, 66)" src="/media/example.png">
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3 mt-3" style="width: 50%; margin: auto;">
+                <label for="id_name" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="id_name" name="name" maxlength="200" required autocomplete="off">
+            </div>
+            <div class="mb-3" style="width: 50%; margin: auto;">
+                <label for="id_dni" class="form-label">DNI:</label>
+                <input type="text" id="id_dni" class="form-control" name="dni" maxlength="20" required autocomplete="off">
+            </div>
+            <div class="mb-3" style="width: 50%; margin: auto;">
+                <p style="color: red;">Revisa los campos que completaste, ya que luego no podrán ser modificados.</p>
+                <button class="btn btn-success" type="submit">Generar Certificado</button>
+            </div>
+        </form>
+
+        {% else %}
+
+            <h1 class="mt-3" >Ya has generado el certificado!</h1>
+
+            <a class="mb-3 btn btn-dark" href="{% url 'profile' %}" >Volver</a>
+
+        {% endif %}
+
+        
+    </div>
+
+{% endblock %}

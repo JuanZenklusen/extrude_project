@@ -13,6 +13,8 @@ from django.shortcuts import get_object_or_404
 from courses.models import Courses, Matricula, Modules, Lessons
 from courses.calc import calcular_porcentaje_avance
 from django.db.models import Count
+from courses.cert_gen import generate_certf
+from datetime import datetime
 
 
 def index(request):
@@ -125,3 +127,43 @@ def profile(request):
             matricula.advance_percentage = 0
 
     return render(request, 'profile.html', {'user_form': user_form, 'profile_form': profile_form, 'matriculas': matriculas})
+
+
+def generate_cert(request, slug):
+    if request.user.is_authenticated:
+        matricula_obj = get_object_or_404(Matricula, slug=slug)
+        if matricula_obj.cert_emited == True:
+            return redirect('profile')
+        
+        else:
+            if request.method == 'POST':
+                name = request.POST.get('name')
+                dni = request.POST.get('dni')
+                commission = matricula_obj.commission.base_cert
+                mat_str = f'00{matricula_obj.pk}'
+                course = matricula_obj.commission.course.name
+
+                # Llamo a la función para generar el certificado
+                name_file = generate_certf(name, dni, commission, mat_str, course)
+
+                # Actualizo los campos correspondientes en la instancia de Matricula
+                matricula_obj.cert_emited = True
+                matricula_obj.name_cert = name_file
+                matricula_obj.date_cert_emited = datetime.now()
+                matricula_obj.save()
+
+                return render(request, 'generate_cert.html', {'matricula_obj': matricula_obj,})
+
+            return render(request, 'generate_cert.html', {'matricula_obj': matricula_obj,})
+    else:
+        return redirect('profile')
+
+
+def view_cert(request, slug):
+    if request.user.is_authenticated:
+        cert = get_object_or_404(Matricula, slug=slug)
+        return render(request, 'view_cert.html', {'cert': cert})
+
+    else:
+        return redirect('profile')
+

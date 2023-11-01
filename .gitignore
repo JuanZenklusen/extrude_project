@@ -7,3 +7,5 @@ local_settings.py
 fabfile.py
 course_images/
 profile_images/
+all_certificates/
+base_cert/

@@ -2,7 +2,16 @@
 
 {% block 'title' %} Perfil de {{ user.username }} {% endblock %}
 
-{% block 'styles' %} {% load static %} {% endblock %}
+{% block 'styles' %} {% load static %} 
+
+<style>
+    .btn-info.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+</style>
+
+{% endblock %}
 
 {% block 'content' %}
 
@@ -121,10 +130,19 @@
                 <h5 class="card-title">Última clase que miraste: Módulo: 
                     {{ matricula.last_lesson.module.nro_order }} 
                     - Clase: {{ matricula.last_lesson.nro_order }} 
-                    - {{ matricula.last_lesson.title }}</h5>
+                    - {{ matricula.last_lesson.title }}</h5> {{ matricula.commission.base_cert }}
                 <div class="container-button">
                     <a class="btn-info" 
-                    href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a>
+                    href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a> &nbsp; &nbsp;
+                    {% if matricula.cert_emited == False %}
+                        {% if matricula.advance_percentage == 100 %}
+                            <a class="btn-info" href="{% url 'generate_cert' matricula.slug %}">Generar Certificado</a>
+                        {% else %}
+                            <a class="btn-info disabled" href="#">Generar Certificado</a>
+                        {% endif %}
+                    {% else %}
+                        <a class="btn-info" href="{% url 'view_cert' matricula.slug %}">Ver Certificado</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
