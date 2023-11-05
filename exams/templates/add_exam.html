@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Administrador {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <h1>Agregar Examen a {{ course.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3 mt-3" style="width: 80%; margin: auto;">
+            <label for="id_name" class="form-label">Titulo:</label>
+            <input type="text" class="form-control" id="id_name" name="name" maxlength="100" required autocomplete="off">
+        </div>
+        <div class="mb-3" style="width: 80%; margin: auto;">
+            <label for="id_description" class="form-label">Descripción:</label>
+            <input type="text" id="id_description" class="form-control" name="description" maxlength="300" required autocomplete="off">
+        </div>
+        <div class="mb-3" style="width: 80%; margin: auto;">
+            <button class="btn btn-success" type="submit">Guardar</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

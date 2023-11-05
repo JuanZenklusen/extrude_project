@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Administrador {% endblock %}
+
+{% block 'content' %}
+
+<div class="mt-2 mb-4 container" style="background-color: rgb(200, 232, 238); border-radius: 10px;">
+    <div class="pb-2 row">
+        <h5 class="mt-4">Agregar una nueva pregunta al examen:</h5>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" class="mt-2 form-control" name="add_question" required autocomplete="off" placeholder="Redacte una pregunta">
+            <button class="mt-2 btn btn-success" type="submit">Agregar</button>
+        </form>
+    </div>
+</div>
+
+{% include 'partials/resumen.html' %}
+
+{% endblock %}

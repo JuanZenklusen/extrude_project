@@ -637,3 +637,42 @@ input.form-control:-webkit-autofill:focus {
     box-shadow: 0 0 0px 1000px white inset !important;
     /* Cambia el color de fondo y la sombra a tus preferencias */
 }
+
+.bg-secondary{
+    background-color: #ccc !important;
+}
+
+.bloque-pregunta{
+    background-color: rgba(255, 113, 113, 0.212);
+    border-radius: 10px;
+    transition: var(--time-transitions);
+}
+
+.bloque-pregunta:hover{
+    background-color: rgba(255, 113, 113, 0.562);
+    border-radius: 10px;
+}
+
+.bloque-respuestas{
+    transition: var(--time-transitions);
+}
+
+.bloque-respuestas:hover{
+    background-color: var(--hover-links-color);
+    box-shadow: 5px 5px 15px gray;
+}
+
+.title-exam{
+    height: 55px;
+    background-color: var(--footer-color);
+    color: var(--hover-links-color);
+    text-align: center;
+    padding-top: 2vh;
+    border-radius: 15px;
+}
+
+.desc-exam{
+    height: 5vh;
+    padding-top: 1vh;
+    text-align: center;
+}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Administrador {% endblock %}
+
+{% block 'content' %}
+
+    <div class="mt-4 container">
+        {% for course in courses %}
+            <div class="row align-items-center {% cycle 'bg-light border' 'bg-white border' %}">
+                <div class="col">
+                    <h4 class="mt-2 mb-2">{{ course.name }}</h4>
+                </div>
+                <div class="col">
+                    {% if course.exam_set.all %}
+                        <a class="mt-2 mb-2" href="{% url 'add_exam' course.slug %}">Crear nuevo examen</a>
+                        {% for exam in course.exam_set.all %}
+                        <li>
+                            <a class="mt-2 mb-2" href="{% url 'administrar_examen' exam.id %}">{{exam.name}}</a>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <a class="mt-2 mb-2" href="{% url 'add_exam' course.slug %}">Crear un examen</a>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+
+{% endblock %}

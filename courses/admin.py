@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Courses, Modules, Lessons, Matricula, Commission
+from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option
 
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
@@ -74,3 +74,23 @@ class MatriculaAdmin(admin.ModelAdmin):
 
 admin.site.register(Matricula, MatriculaAdmin)
 '''
+
+class ExamAdmin(admin.ModelAdmin):
+    list_display = ('course', 'name', 'description')
+    readonly_fields = ('id', 'created_at', 'modified_at')
+
+admin.site.register(Exam, ExamAdmin)
+
+
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('exam', 'text')
+    readonly_fields = ('id', 'created_at', 'modified_at')
+
+admin.site.register(Question, QuestionAdmin)
+
+
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ('question', 'text', 'is_correct')
+    readonly_fields = ('id', 'created_at', 'modified_at')
+
+admin.site.register(Option, OptionAdmin)

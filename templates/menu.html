@@ -3,6 +3,9 @@
     {% if user.is_authenticated %}
     
     <div>
+        {% if user.is_superuser %}
+            <a style="color: rgb(255, 106, 106);" href="{% url 'adm_super' %}">Examenes</a>
+        {% endif %}
         <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>
         <a href="{% url 'courses' %}"><span class="fa-solid fa-computer">&nbsp</span>Cursos</a>
         <a href="{% url 'profile' %}"><span class="fa-solid fa-user-gear">&nbsp</span>{{ user.username }} </span></a>

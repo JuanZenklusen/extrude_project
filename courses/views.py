@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from .models import ModuleRating
-from .models import Courses, Modules, Lessons, Matricula
+from .models import Courses, Modules, Lessons, Matricula, Exam, Question, Option
 from .calc import calcular_porcentaje_avance
 
 def no_matriculado(request):

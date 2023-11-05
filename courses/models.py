@@ -166,3 +166,34 @@ class ModuleRating(models.Model):
     def __str__(self):
         return self.rating
     
+
+class Exam(models.Model):
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, blank=False, null=False)  # Nombre del examen
+    description = models.CharField(max_length=300, blank=False, null=False)  # Descripción del examen
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Question(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    text = models.CharField(max_length=400, blank=False, null=False)  # Texto de la pregunta
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.text
+
+
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    text = models.CharField(max_length=400, blank=False, null=False)  # Texto de la opción
+    is_correct = models.BooleanField(default=False)  # Marca si la opción es la correcta
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.text
