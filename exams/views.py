@@ -76,6 +76,8 @@ def delete_question(request, id, id_q):
     question = get_object_or_404(Question, id=id_q)
     questions = Question.objects.filter(exam=exam)
 
+    question.delete()
+
     return redirect(reverse('administrar_examen', kwargs={'id': id}))
 
 
@@ -134,3 +136,6 @@ def delete_option(request, id, id_q, id_op):
     option.delete()
 
     return redirect(reverse('administrar_examen', kwargs={'id': id}))
+
+
+

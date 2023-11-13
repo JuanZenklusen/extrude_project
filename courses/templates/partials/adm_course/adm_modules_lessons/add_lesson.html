@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Agregar Clase {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="row">
+        <h5 class="mt-4 mb-4 title-exam">Nueva clase para: {{ course.name }} - Modulo {{ module.nro_order }}: {{ module.title }} </h5>
+
+        <div class="row">
+            <form method="POST">
+                {% csrf_token %}
+                <label class="form-label" for="l_title">Titulo de la clase</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="l_title" type="text" name="title" placeholder="Titulo de la clase" autocomplete="off" required>
+
+                <label class="form-label" for="l_subtitulo">Subtitulo</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="l_subtitulo" type="text" name="subtitle" placeholder="Subtitulo" autocomplete="off">
+
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="l_nro_order">Número de orden de la clase</label>
+                        <input class="mb-3 form-control border-3 border-primary-subtle" id="l_nro_order" type="number" name="nro_order" placeholder="Nº de orden" required>
+                    </div>
+                    <div class="col">
+                        <div class="row">Nº orden y tiítulo de las clases ya cargadas a este modulo</div>
+                        {% for lesson in module.lessons_set.all %}
+                            <div class="row">
+                                <div class="col-auto">{{ lesson.nro_order }}-</div>
+                                <div class="col">{{ lesson.title }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p style="color: crimson;">(Importante asignar correctamente el nro de orden para ordenar el orden de los módulos)</p>
+
+                <label class="form-label" for="l_video">Link de video de la clase</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="l_video" type="text" name="video" placeholder="Link de video de la clase" autocomplete="off">
+
+                <label for="pdf">PDF:</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" type="file" name="pdf" accept=".pdf">
+
+                <label class="form-label" for="l_text1">Párrafo/Texto 1</label> 
+                <textarea class="mb-3 form-control border-3 border-primary-subtle" name="text1" id="l_text1" rows="10"></textarea>
+
+                <label class="form-label" for="l_text2">Párrafo/Texto 2</label> 
+                <textarea class="mb-3 form-control border-3 border-primary-subtle" name="text2" id="l_text2" rows="10"></textarea>
+
+                <label class="form-label" for="l_text3">Párrafo/Texto 3</label> 
+                <textarea class="mb-3 form-control border-3 border-primary-subtle" name="text3" id="l_text3" rows="10"></textarea>
+
+                <label class="form-label" for="l_class_materials">Link para acceder al drive con los archivos de la clase</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="l_class_materials" type="text" name="class_materials" placeholder="Link de drive" autocomplete="off">
+
+                <input class="mb-2 btn btn-success" type="submit" value="Guardar módulo">
+                <a class="mb-2 btn btn-secondary" href="{% url 'adm_modules_lessons' course.id %}">Volver sin guardar</a>
+            </form>
+        </div>
+    
+</div>
+
+{% endblock %}

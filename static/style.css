@@ -667,7 +667,7 @@ input.form-control:-webkit-autofill:focus {
     background-color: var(--footer-color);
     color: var(--hover-links-color);
     text-align: center;
-    padding-top: 2vh;
+    padding-top: 17px;
     border-radius: 15px;
 }
 
@@ -675,4 +675,16 @@ input.form-control:-webkit-autofill:focus {
     height: 5vh;
     padding-top: 1vh;
     text-align: center;
+}
+
+.top-edit-course{
+    background-color: #181818;
+    color: #bbb;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: var(--time-transitions);
+}
+
+.top-edit-course:hover{
+    color: #ff7171;
 }

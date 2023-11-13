@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Editar curso {% endblock %}
+
+{% block 'content' %}
+
+    <div class="row top-edit-course">
+        <h1 class="text-center">Crear nuevo curso</h1>
+    </div>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <div class="mt-4 row">
+                    <h5>Titulo y Descripción</h5>
+                    <label class="form-label" for="course_name">Nombre del curso<span class="_required"> *</span></label>
+                    <input class="form-control border-3 border-primary-subtle" type="text" name="course_name" id="course_name" required autocomplete="off">
+                </div>
+                <div class="mt-4 row">
+                    <label class="form-label" for="course_description">Descripción del curso<span class="_required"> *</span></label>
+                    <textarea class="form-control border-3 border-primary-subtle" name="course_description" id="course_description" rows="5" ></textarea>
+                </div>
+                <div class="mt-4 row">
+                    <div class="col-auto">
+                        <input style="scale: 1.8;" type="checkbox" name="course_featured" id="course_featured">
+                    </div>
+                    <div class="col">
+                        ¿Destacar en pagina principal?
+                    </div>
+                    <div class="col-auto">
+                        <input style="scale: 1.8;" type="checkbox" name="course_visible" id="course_visible">
+                    </div>
+                    <div class="col">
+                        ¿Activo en la tienda? <br> (Nota: me falta hacer la validación en la tienda)
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="mt-4 px-4 row">
+                    <div class="row">
+                        <h5>Imagen por defecto</h5>
+                        <div class="image-container">
+                            <img style="height: 200px; margin-left: 50px;" src="/media/course-default.jpg">
+                        </div>
+                        <p class="text-center">Al crearse un curso se asigna la imagen por defecto, luego puede editarse</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Precio</h5>
+            <div class="col">
+                <label class="form-label" for="course_price">Precio (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_price" id="course_price" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="course_payment_installments">Cantidad de cuotas (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="number" name="course_payment_installments" 
+                        id="course_payment_installments">
+            </div>
+            <div class="col">
+                <label class="form-label for="course_price_payment_installments">Valor de la cuota (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_price_payment_installments" 
+                id="course_price_payment_installments" autocomplete="off">
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Referencias externas</h5>
+            <label class="mt-3 form-labe" for="course_link_mp">Link de mercado pago</label>
+            <input class="form-control border-3 border-primary-subtle" type="text" name="course_link_mp" id="course_link_mp" autocomplete="off">
+            <label class="mt-3 form-labe" for="course_program">Link de programa del curso</label>
+            <input class="form-control border-3 border-primary-subtle" type="text" name="course_program" id="course_program" autocomplete="off">
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Tiempo y duración</h5>
+            <div class="col">
+                <label class="form-label" for="course_lesson_duration">Duración de la clase</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_lesson_duration" id="course_lesson_duration" autocomplete="off">
+            </div>
+            <div class="col">
+                <label class="form-label" for="course_weekly_frequency">Cantidad de clases por semana</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_weekly_frequency" id="course_weekly_frequency" autocomplete="off">
+            </div>
+            <div class="col">
+                <label class="form-label" for="course_duration_in_weeks">Duración del curso en semanas</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_duration_in_weeks" id="course_duration_in_weeks" autocomplete="off">
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Detalles del curso</h5>
+            <label class="mt-3 form-label" for="course_modality">Modalidad de cursado</label>
+            <select class="form-control border-3 border-primary-subtle" name="course_modality" id="course_modality">
+                <option value=""></option>
+                <option value="Clases sincrónicas en vivo">Clases sincrónicas en vivo</option>
+                <option value="Clases asincrónicas a tu ritmo">Clases asincrónicas a tu ritmo</option>
+                <option value="Seminario, unica clase">Seminario, unica clase</option>
+                <option value="Bootcamp sincrónico en vivo">Bootcamp sincrónico en vivo</option>
+                <option value="Webinar en vivo">Webinar en vivo</option>
+            </select>
+            <label class="mt-3 form-label" for="course_requirements">Requisitos/conocimientos previos para realizar el curso</label>
+            <textarea class="form-control border-3 border-primary-subtle" name="course_requirements" id="course_requirements" rows="6"></textarea>
+            <label class="mt-3 form-label" for="course_text_include">Redacción de lo que incluye el curso</label>
+            <textarea class="form-control border-3 border-primary-subtle" name="course_text_include" id="course_text_include" rows="6"></textarea>
+        </div>
+
+        <input class="mt-3 mb-3 btn btn-outline-success" type="submit" value="Guardar">
+
+    </form>
+
+<br>
+    
+    <div>
+        <a class="mt-3 mb-3 btn btn-outline-primary" href="{% url 'adm_courses' %}">Volver</a>
+    </div>
+
+</div>
+
+{% endblock %}

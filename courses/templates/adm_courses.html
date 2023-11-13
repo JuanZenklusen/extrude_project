@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Administrador de cursos {% endblock %}
+
+{% block 'content' %}
+
+    <div class="container">
+        <h5 class="mt-4 mb-4 title-exam">Administrador de cursos</h5>
+        <div class="row">
+            <a class="mb-2 btn btn-success" href="{% url 'add_course' %}">Agregar nuevo curso</a>
+        </div>
+        <hr>
+        <div class="row">
+            <nav class="pt-3 pb-3  navbar navbar-light bg-light">
+                <form class="d-flex" style="width: 100%;">
+                    <input class="form-control me-2 border-3" type="search" placeholder="Buscar" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+            </nav>
+        </div>
+        <hr>
+        {% for course in courses %} 
+        
+            <div class="pt-3 pb-3 row border {% cycle 'bg-light border' 'bg-white border' %}">
+                <div class="col border">
+                    <div class="row">
+                        <div class="col">{{course.id}}-{{course.name}} </div>
+                        {% if course.visible %} <div class="col-auto"><span style="color: Blue;">Visible</span></div> {% endif %} 
+                        {% if course.featured %} <div class="col-auto"><span style="color: green;">Destacado</span></div> {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-auto">Valor: $ {{course.price}}</div>
+                        <div class="col-auto">Ultima modificacion: {{course.modified_at}}</div>
+                    </div>
+                    <a class="btn btn-outline-success" href="{% url 'adm_course' course.id %}">Editar curso</a>
+                    <a class="btn btn-outline-primary" href="{% url 'adm_modules_lessons' course.id %}">Administrar modulos y clases</a>
+                </div>
+                <div class="col-7 border">
+                    <div class="col">Comisiones | <a href="{% url 'add_commission' course.id %}">Agregar comisión</a>
+                        {% for commission in course.commission_set.all %}
+                        <div class="row border {% cycle 'bg-light border' 'bg-white border' %}">
+                            <div class="col">{{ commission }}</div>
+                            <div class="col-auto"><a href="{% url 'edit_commission' commission.id %}">Editar comisión</a></div>
+                            <div class="col-auto"><a href="{% url 'add_matricula' commission.id %}">Nueva matricula</a></div>
+                            <div class="col-auto">{{ commission.matricula_set.all|length }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+        
+        {% endfor %}
+    </div>
+
+{% endblock %}

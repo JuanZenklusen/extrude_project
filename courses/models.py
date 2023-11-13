@@ -23,6 +23,7 @@ class Courses(models.Model):
     duration_in_weeks = models.CharField(max_length=50, blank=True, null=True,) #duracion en semanas
     text_include = models.TextField(max_length=1500, blank=True, null=True,) #lo que incluye el curso
     featured = models.BooleanField(default=False) #Aparece o no en destacados?
+    visible = models.BooleanField(default=True) #para activar si se ve o no en la tienda
     slug = models.SlugField(null=False, blank=False, unique=True) #slug para el link, se genera automáticamente
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -80,11 +81,11 @@ class Lessons(models.Model):
     subtitle = models.CharField(max_length=500, blank=True, null=True) #subtitulo
     nro_order = models.IntegerField() #numero de orden de clase
     video = models.CharField(max_length=200, blank=True, null=True) #Link de video
-    document = models.CharField(max_length=200, blank=True, null=True) #Link drive de archivos de la clase
     text1 = models.TextField(null=True, blank=True, default="") #texto 1
     text2 = models.TextField(null=True, blank=True, default="") #texto 2
     text3 = models.TextField(null=True, blank=True, default="") #texto 3
     class_materials = models.CharField(max_length=200, blank=True, null=True) #para agregar un link de drive que contenga powerpoints, excels, entre otros
+    pdf = models.FileField(blank=True, null=True, upload_to='pdfs', unique=True)
     module = models.ForeignKey(Modules, on_delete=models.CASCADE)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -164,7 +165,7 @@ class ModuleRating(models.Model):
         unique_together = ['user', 'module']  # Un usuario solo puede calificar un módulo una vez
 
     def __str__(self):
-        return self.rating
+        return str(self.rating)
     
 
 class Exam(models.Model):

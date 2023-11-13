@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Agregar comisión a curso {{ course.name }} {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="container">
+        <h5 class="mt-4 mb-4 title-exam">Agregar nueva comisión al curso {{ course.name }}</h5>
+    </div>
+
+    <div class="row">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="form-label" for="c_name">Titulo de Comisión</label>
+            <input class="mb-3 form-control border-3 border-primary-subtle" id="c_name" type="text" name="name" placeholder="Titulo de Comisión" autocomplete="off" required>
+
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="c_date">Mes y año de inicio</label>
+                    <input class="mb-3 form-control border-3 border-primary-subtle" id="c_date" type="text" name="date" placeholder="Noviembre 2023" autocomplete="off" required>
+                </div>
+                <div class="col">
+                    <label class="form-label" for="c_teacher">Nombre y apellido profesor/es</label>
+                    <input class="mb-3 form-control border-3 border-primary-subtle" id="c_teacher" type="text" name="teacher" autocomplete="off">
+                </div>
+                <div class="col">
+                    <label class="form-label" for="c_tutor">Nombre y apellido Tutor</label>
+                    <input class="mb-3 form-control border-3 border-primary-subtle" id="c_tutor" type="text" name="tutor" autocomplete="off">
+                </div>
+            </div>
+
+            <label class="form-label" for="c_base_cert">Imágen base de certificado (si no se asigna una, toma por defecto la del instituto)</label>
+            <input class="mb-3 form-control border-3 border-primary-subtle" type="file" id="c_base_cert" name="base_cert">
+
+            <input class="mb-3 btn btn-success" type="submit" value="Crear comisión">
+        </form>
+        <div class="mb-4 row-auto">
+            <a class="btn btn-secondary" href="{% url 'adm_courses' %}">Volver a administrador de cursos</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

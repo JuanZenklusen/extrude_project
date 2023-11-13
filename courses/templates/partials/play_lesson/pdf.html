@@ -1,0 +1,29 @@
+{% if lesson.pdf and lesson.pdf.url != None %}
+    <br>
+    <div class="pdf-container">
+        <iframe id="pdf-iframe" type="application/pdf" width="100%" height="650px" src="{{ pdf_url }}"></iframe>
+        <p id="pdf-error-message" style="color: red;"></p>
+    </div>
+
+
+
+{% block 'scripts' %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('{{ lesson.pdf.url }}');  // Agrega esta línea
+        var pdfIframe = document.getElementById('pdf-iframe');
+        var errorMessage = document.getElementById('pdf-error-message');
+
+        // Intenta cargar el PDF en el iframe
+        pdfIframe.src = '{{ lesson.pdf.url }}';
+
+        // Maneja el evento de error
+        pdfIframe.onerror = function () {
+            errorMessage.textContent = 'Error al cargar el PDF. Por favor, inténtalo de nuevo más tarde.';
+        };
+    });
+</script>
+
+{% endblock %}
+
+{% endif %}

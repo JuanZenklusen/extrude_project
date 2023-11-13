@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Agregar modulo {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="row">
+        <h5 class="mt-4 mb-4 title-exam">Nuevo modulo para: {{ course.name }}</h5>
+    </div>
+    <div class="row">
+        <form method="POST">
+            {% csrf_token %}
+            <label class="form-label" for="m_title">Titulo del modulo</label>
+            <input class="mb-3 form-control border-3 border-primary-subtle" id="m_title" type="text" name="title" placeholder="Titulo del modulo" autocomplete="off" required>
+
+            <label class="form-label" for="m_subtitle">Subtitulo del modulo</label>
+            <input class="mb-3 form-control border-3 border-primary-subtle" id="m_subtitle" type="text" name="subtitle" placeholder="Subtitulo" autocomplete="off">
+
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="m_nro_order">Nº de orden de módulo</label>
+                    <input class="mb-3 form-control border-3 border-primary-subtle" id="m_nro_order" type="number" name="nro_order" placeholder="Nº de orden de módulo" required>
+                </div>
+                <div class="col">
+                    <div class="row">Nº orden y tiítulo de modulos ya cargados a este curso</div>
+                    {% for module in modules %}
+                        <div class="row">{{ module.nro_order }}- {{ module.title }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <p style="color: crimson;">(Importante asignar correctamente el nro de orden para ordenar el orden de los módulos)</p>
+            <input class="mb-2 btn btn-success" type="submit" value="Guardar módulo">
+            <a class="mb-2 btn btn-secondary" href="{% url 'adm_modules_lessons' course.id %}">Volver sin guardar</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

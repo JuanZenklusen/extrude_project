@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Crear matricula {{ commission }} {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+
+    <div class="container">
+        <h5 class="mt-4 mb-4 title-exam">Generar nueva matricula para comisión: {{ commission.name }}</h5>
+    </div>
+
+    <div class="row">
+        <form method="POST">
+            {% csrf_token %}
+
+            
+            <label class="form-label" for="m_user">Seleccionar usuario</label>
+            <select class="mb-4 form-control border-3 border-primary-subtle" name="user" id="m_user">
+                <option value=""></option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }} - {{ user.email }} - </option>
+                {% endfor %}
+            </select>
+
+            <div class="row-auto">
+                <input class="mb-3 btn btn-success" type="submit" value="Crear matrícula">
+            </div>
+        </form>
+
+        </form>
+        <div class="mb-4 row-auto">
+            <a class="btn btn-secondary" href="{% url 'adm_courses' %}">Volver a administrador de cursos</a>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

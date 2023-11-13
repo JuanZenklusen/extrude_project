@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Editar curso {% endblock %}
+
+{% block 'content' %}
+
+
+    <div class="row top-edit-course">
+        <h1 class="text-center">Editar curso: {{course.name}}</h1>
+        <div class="col text-center">Slug: {{course.slug}}</div>
+        <div class="col text-center">Creado: {{course.created_at}}</div>
+        <div class="col text-center">Ultima modificación: {{course.modified_at}}</div>
+    </div>
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <div class="mt-4 row">
+                    <h5>Titulo y Descripción</h5>
+                    <label class="form-label" for="course_name">Nombre del curso<span class="_required"> *</span></label>
+                    <input class="form-control border-3 border-primary-subtle" type="text" name="course_name" id="course_name" value="{{course.name}}" required autocomplete="off">
+                </div>
+                <div class="mt-4 row">
+                    <label class="form-label" for="course_description">Descripción del curso<span class="_required"> *</span></label>
+                    <textarea class="form-control border-3 border-primary-subtle" name="course_description" id="course_description" rows="5" >{{course.description}}</textarea>
+                </div>
+                <div class="mt-4 row">
+                    <div class="col-auto">
+                        <input style="scale: 1.8;" type="checkbox" name="course_featured" id="course_featured" {% if course.featured %}checked{% endif %}>
+                    </div>
+                    <div class="col">
+                        ¿Destacar en pagina principal?
+                    </div>
+                    <div class="col-auto">
+                        <input style="scale: 1.8;" type="checkbox" name="course_visible" id="course_visible" {% if course.visible %}checked{% endif %}>
+                    </div>
+                    <div class="col">
+                        ¿Activo en la tienda? <br> (Nota: me falta hacer la validación en la tienda)
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="mt-4 px-4 row">
+                    <h5>Cambiar imágen</h5>
+                    <div class="mb-3 row">
+                        <label class="form-label" for="course_img">Reemplazar imágen</label>
+                        <input class="form-control border-3 border-primary-subtle" type="file" id="course_img" name="course_img">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <h5>Imagen actual</h5>
+                        <div class="image-container">
+                            <img style="height: 200px; margin-left: 50px;" src="{{ course.img.url }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Precio</h5>
+            <div class="col">
+                <label class="form-label" for="course_price">Precio (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_price" id="course_price" value="{{course.price}}" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="course_payment_installments">Cantidad de cuotas (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="number" name="course_payment_installments" 
+                        id="course_payment_installments" value="{{course.payment_installments}}">
+            </div>
+            <div class="col">
+                <label class="form-label for="course_price_payment_installments">Valor de la cuota (ARS)</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_price_payment_installments" 
+                id="course_price_payment_installments" value="{{course.price_payment_installments}}" autocomplete="off">
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Referencias externas</h5>
+            <label class="mt-3 form-labe" for="course_link_mp">Link de mercado pago</label>
+            <input class="form-control border-3 border-primary-subtle" type="text" name="course_link_mp" id="course_link_mp" value="{{course.link_mp}}" required autocomplete="off">
+            <label class="mt-3 form-labe" for="course_program">Link de programa del curso</label>
+            <input class="form-control border-3 border-primary-subtle" type="text" name="course_program" id="course_program" value="{{course.program}}" autocomplete="off">
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Tiempo y duración</h5>
+            <div class="col">
+                <label class="form-label" for="course_lesson_duration">Duración de la clase</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_lesson_duration" id="course_lesson_duration" value="{{course.lesson_duration}}" autocomplete="off">
+            </div>
+            <div class="col">
+                <label class="form-label" for="course_weekly_frequency">Cantidad de clases por semana</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_weekly_frequency" id="course_weekly_frequency" value="{{course.weekly_frequency}}" autocomplete="off">
+            </div>
+            <div class="col">
+                <label class="form-label" for="course_duration_in_weeks">Duración del curso en semanas</label>
+                <input class="form-control border-3 border-primary-subtle" type="text" name="course_duration_in_weeks" id="course_duration_in_weeks" value="{{course.duration_in_weeks}}" autocomplete="off">
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 row">
+            <h5>Detalles del curso</h5>
+            <label class="mt-3 form-label" for="course_modality">Modalidad de cursado</label>
+            <select class="form-control border-3 border-primary-subtle" name="course_modality" id="course_modality">
+                <option value=""></option>
+                <option value="Clases sincrónicas en vivo" {% if course.modality == "Clases sincrónicas en vivo" %} selected {% endif %}>Clases sincrónicas en vivo</option>
+                <option value="Clases asincrónicas a tu ritmo" {% if course.modality == "Clases asincrónicas a tu ritmo" %} selected {% endif %}>Clases asincrónicas a tu ritmo</option>
+                <option value="Seminario, unica clase" {% if course.modality == "Seminario, unica clase" %} selected {% endif %}>Seminario, unica clase</option>
+                <option value="Bootcamp sincrónico en vivo" {% if course.modality == "Bootcamp sincrónico en vivo" %} selected {% endif %}>Bootcamp sincrónico en vivo</option>
+                <option value="Webinar en vivo" {% if course.modality == "Webinar en vivo" %} selected {% endif %}>Webinar en vivo</option>
+            </select>
+            <label class="mt-3 form-label" for="course_requirements">Requisitos/conocimientos previos para realizar el curso</label>
+            <textarea class="form-control border-3 border-primary-subtle" name="course_requirements" id="course_requirements" rows="6">{{course.requirements}}</textarea>
+            <label class="mt-3 form-label" for="course_text_include">Redacción de lo que incluye el curso</label>
+            <textarea class="form-control border-3 border-primary-subtle" name="course_text_include" id="course_text_include" rows="6">{{course.text_include}}</textarea>
+        </div>
+
+        <input class="mt-3 mb-3 btn btn-outline-success" type="submit" value="Guardar">
+
+    </form>
+
+<br>
+    
+    <div>
+        <a class="mt-3 mb-3 btn btn-outline-primary" href="{% url 'adm_courses' %}">Volver</a>
+    </div>
+</div>
+
+{% endblock %}

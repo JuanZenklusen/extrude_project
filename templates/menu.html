@@ -4,6 +4,7 @@
     
     <div>
         {% if user.is_superuser %}
+            <a style="color: rgb(255, 106, 106);" href="{% url 'adm_courses' %}">Administrar cursos</a>
             <a style="color: rgb(255, 106, 106);" href="{% url 'adm_super' %}">Examenes</a>
         {% endif %}
         <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>

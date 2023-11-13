@@ -4,7 +4,7 @@ from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Ques
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
               'link_mp', 'program', 'img', 'modality', 'requirements', 'lesson_duration', 'weekly_frequency',
-              'duration_in_weeks', 'text_include', 'featured')
+              'duration_in_weeks', 'text_include', 'visible', 'featured')
     list_display = ('name', 'id', 'price', 'slug', 'created_at', 'modified_at')
     search_fields = ('name', 'description', 'price', 'duration_in_weeks')
     list_filter = ('name', 'modality')
@@ -22,7 +22,7 @@ admin.site.register(Modules, ModulesAdmin)
 
 
 class LessonsAdmin(admin.ModelAdmin):
-    fields = ('title', 'subtitle', 'class_materials', 'nro_order', 'video', 'text1',
+    fields = ('title', 'subtitle', 'nro_order', 'video', 'pdf', 'class_materials', 'text1',
               'text2', 'text3', 'module')
     list_display = ('title', 'id', 'slug', 'created_at', 'modified_at')
     list_filter = ('module', 'nro_order')
