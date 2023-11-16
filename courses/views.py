@@ -9,85 +9,58 @@ from .calc import calcular_porcentaje_avance
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+
+def str_price(price):
+    return "{:,.2f}".format(price).replace(",", "temp").replace(".", ",").replace("temp", ".")
+
+
+
 def no_matriculado(request):
     return render(request, 'no_matriculado.html', {})
 
 
-'''def courses(request):
-    courses = Courses.objects.all()
-    return render(request, 'courses.html', {'courses': courses})'''
-
 
 def courses(request):
     courses = Courses.objects.filter(visible=True)
+
+    for course in courses:
+        if course.price:
+            course.formatted_price = str_price(course.price)
+        else:
+            course.formatted_price = None
+
+        if course.price_payment_installments:
+            course.formatted_price_payment_installments = str_price(course.price_payment_installments)
+        else:
+            course.formatted_price_payment_installments = None
+
     return render(request, 'courses.html', {'courses': courses})
+
 
 
 def view_course(request, slug):
     course = get_object_or_404(Courses, slug=slug)
     modules = Modules.objects.filter(course=course).order_by('nro_order')
-    return render(request, 'course_slug.html', {'course': course, 'modules': modules})
+    exams = Exam.objects.filter(course = course, visible = True)
 
+    if course.price:
+        course.formatted_price = str_price(course.price)
+    else:
+        course.formatted_price = None
 
+    if course.price_payment_installments:
+        course.formatted_price_payment_installments = str_price(course.price_payment_installments)
+    else:
+        course.formatted_price_payment_installments = None
 
-'''@login_required
-def play_lesson(request, slug, slug_l):
-    course = get_object_or_404(Courses, slug=slug)
-    lesson = get_object_or_404(Lessons, slug=slug_l)
-    title_lesson = lesson.title
-    print(title_lesson)
-    matricula = Matricula.objects.filter(user=request.user, commission__course=course)
-    advance = calcular_porcentaje_avance(matricula.first(), course)
+    if request.user.is_authenticated:
+        matricule = Matricula.objects.filter(user=request.user, commission__course=course).first()
+        
+    else:
+        matricule = None
 
-    if not matricula.exists():
-        return redirect('no_matriculado')  # Redirige al usuario a la página de inicio, 
-                                           # ajusta el nombre de la vista según tu configuración
-
-    modules = Modules.objects.filter(course=course).order_by('nro_order')
-
-    # Obtén todas las lecciones relacionadas con el curso
-    all_lessons = Lessons.objects.filter(module__course=course).order_by('module__nro_order', 'nro_order')
-    cantidad_modulos = Modules.objects.filter(course=course).count()
-
-    # Encuentra la lección siguiente en función de la lección actual
-    next_lesson = None
-    for i, current_lesson in enumerate(all_lessons):
-        if current_lesson == lesson and i < len(all_lessons) - 1:
-            next_lesson = all_lessons[i + 1]
-            break
-
-    # Actualizar el campo 'last_lesson' y 'lessons_viewed' en el objeto Matricula
-    if matricula.exists():
-        matricula_instance = matricula.first()
-        matricula_instance.last_lesson = lesson  # Actualiza la última lección vista
-        matricula_instance.lessons_viewed.add(lesson)  # Agrega la lección actual a las lecciones vistas
-        matricula_instance.save()
-
-    # Grabar calificación modulo
-    if request.method == 'POST':
-        # Procesa la calificación del módulo si se envió un formulario POST
-        rating = request.POST.get('rating')
-        if rating:
-            # Verifica si el usuario ya ha calificado este módulo antes
-            existing_rating, created = ModuleRating.objects.get_or_create(user=request.user, module=lesson.module)
-            existing_rating.rating = rating
-            existing_rating.save()
-
-    user_rating = ModuleRating.objects.filter(user=request.user, module=lesson.module).first()
-    print(lesson.pdf.url)
-
-    return render(request, 'play_lesson.html', {'course': course, 
-                                                'modules': modules, 
-                                                'lesson': lesson,
-                                                'title_lesson': title_lesson, 
-                                                'user_rating': user_rating, 
-                                                'cantidad_modulos': cantidad_modulos,
-                                                'next_lesson': next_lesson,
-                                                'advance': advance})
-                                                
-                                                
-Este fragmento lo guarde xq era el que funcionaba antes de agregar el pdf a la vista, si se migra todo OK borrar'''
-
+    
+    return render(request, 'course_slug.html', {'course': course, 'modules': modules, 'matricule': matricule, 'exams': exams})
 
 
 
@@ -96,9 +69,9 @@ def play_lesson(request, slug, slug_l):
     course = get_object_or_404(Courses, slug=slug)
     lesson = get_object_or_404(Lessons, slug=slug_l)
     title_lesson = lesson.title
-    print(title_lesson)
     matricula = Matricula.objects.filter(user=request.user, commission__course=course)
     advance = calcular_porcentaje_avance(matricula.first(), course)
+    matricule = matricula
 
     if not matricula.exists():
         return redirect('no_matriculado')
@@ -144,7 +117,8 @@ def play_lesson(request, slug, slug_l):
                                                 'cantidad_modulos': cantidad_modulos,
                                                 'next_lesson': next_lesson,
                                                 'advance': advance,
-                                                'pdf_url': pdf_url})
+                                                'pdf_url': pdf_url,
+                                                'matricule': matricule})
 
 
 
@@ -306,13 +280,16 @@ def add_lesson(request, id):
         subtitle =  request.POST.get('subtitle')
         nro_order =  request.POST.get('nro_order')
         video =  request.POST.get('video')
-        pdf = request.POST.get('pdf')
+
+        pdf = request.FILES.get('pdf')
+        
         text1 = request.POST.get('text1')
         text2 = request.POST.get('text2')
         text3 = request.POST.get('text3')
         class_materials = request.POST.get('class_materials')
         module_ = module
 
+        
         new_lesson = Lessons.objects.create(
             title = title,
             subtitle = subtitle,

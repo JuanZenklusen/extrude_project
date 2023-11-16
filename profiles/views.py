@@ -15,10 +15,24 @@ from courses.calc import calcular_porcentaje_avance
 from django.db.models import Count
 from courses.cert_gen import generate_certf
 from datetime import datetime
+from courses.views import str_price
 
 
 def index(request):
     featured_courses = Courses.objects.filter(featured=True)
+
+    for course in featured_courses:
+        if course.price:
+            course.formatted_price = str_price(course.price)
+        else:
+            course.formatted_price = None
+
+        if course.price_payment_installments:
+            course.formatted_price_payment_installments = str_price(course.price_payment_installments)
+        else:
+            course.formatted_price_payment_installments = None
+
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():

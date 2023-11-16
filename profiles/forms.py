@@ -19,7 +19,7 @@ class RegisterForm(UserCreationForm):
    
    
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre de usuario', 'class': 'form-control',}))
+    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre de usuario', 'class': 'form-control', 'autocomplete': 'off',}))
     password = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', 'name': 'password',}))
     remember_me = forms.BooleanField(required=False)
 

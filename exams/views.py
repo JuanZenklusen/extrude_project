@@ -16,8 +16,12 @@ def add_exam(request, slug):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
+        if 'exam_visible' in request.POST:
+            visible = True
+        else:
+            visible = False
 
-        exam = Exam.objects.create(course=course, name=name, description=description)
+        exam = Exam.objects.create(course = course, name = name, description = description, visible = visible)
         exam.save()
 
         return redirect('adm_super')
@@ -138,4 +142,15 @@ def delete_option(request, id, id_q, id_op):
     return redirect(reverse('administrar_examen', kwargs={'id': id}))
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='index')
+def visible_exam(request, id):
+    exam = get_object_or_404(Exam, id=id)
 
+    if exam.visible == True:
+        exam.visible = False
+        exam.save()
+    else:
+        exam.visible = True
+        exam.save()
+
+    return redirect('adm_super')

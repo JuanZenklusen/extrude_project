@@ -3,19 +3,38 @@
 {% block 'title' %} Administrador {% endblock %}
 
 {% block 'content' %}
-
     <div class="mt-4 container">
         {% for course in courses %}
             <div class="row align-items-center {% cycle 'bg-light border' 'bg-white border' %}">
-                <div class="col">
+                <div class="col-5">
                     <h4 class="mt-2 mb-2">{{ course.name }}</h4>
                 </div>
                 <div class="col">
                     {% if course.exam_set.all %}
-                        <a class="mt-2 mb-2" href="{% url 'add_exam' course.slug %}">Crear nuevo examen</a>
+                        <a class="mt-2 mb-3 row" href="{% url 'add_exam' course.slug %}">Crear nuevo examen</a>
                         {% for exam in course.exam_set.all %}
-                        <li>
-                            <a class="mt-2 mb-2" href="{% url 'administrar_examen' exam.id %}">{{exam.name}}</a>
+                        <li style="list-style:none">
+                            <div class="row">
+                                <div class="col-auto">-</div>
+                                <div class="col">
+                                    <a class="mt-2 mb-2" href="{% url 'administrar_examen' exam.id %}">{{exam.name}}</a>
+                                </div>
+                                
+                                {% if exam.visible == True %}
+                                <div class="col-auto">
+                                    <p style="color: green;">Habilitado</p>
+                                </div>
+                                {% else %}
+                                <div class="col-auto">
+                                    <p style="color: red;">No habilitado</p>
+                                </div>
+                                {% endif %}
+
+                                <div class="col-auto">
+                                    <a href="{% url 'visible_exam' exam.id %}">Habilitar/Deshabilitar</a>
+                                </div>
+                            
+                            </div>
                         </li>
                         {% endfor %}
                     {% else %}

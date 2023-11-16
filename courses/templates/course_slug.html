@@ -4,10 +4,6 @@
 
 {% block 'content' %}
 
-<p>
-    {{ pricee }}
-</p>
-
 <div class="card-profile">
     <div class="card-profile-sections">
     
@@ -17,8 +13,8 @@
                 <img src="{{ course.img.url }} " />
             </div>
             <h2>{{ course.name }}</h2>
-            <h3>{{ course.payment_installments }} cuotas sin interés </h3> <h3>de AR$ {{ course.price_payment_installments|floatformat:2 }}</h3>
-            <h4>Precio total: AR$ {{ course.price|floatformat:2 }}</h4>
+            <h3>{{ course.payment_installments }} cuotas sin interés de </h3> <h3 style="font-size: 40px;">AR$ {{ course.formatted_price_payment_installments }}</h3>
+            <h4>Precio total: AR$ {{ course.formatted_price }}</h4>
             <div class="container-button">
                 <a class="btn-info" href="{{ course.link_mp }}">Inscribirme ahora</a>
             </div>
