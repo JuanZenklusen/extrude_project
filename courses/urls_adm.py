@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import adm_courses, add_course, adm_course, adm_modules_lessons, add_module, edit_module, add_lesson, edit_lesson, add_commission, edit_commission, add_matricula
+from .views import adm_courses, add_course, adm_course, adm_modules_lessons, add_module, edit_module, add_lesson, edit_lesson, add_commission, edit_commission, add_matricula, change_visibility_lesson
 
 urlpatterns = [
     path('', adm_courses, name='adm_courses'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('add_commission/<int:id>', add_commission, name='add_commission'),
     path('edit_commission/<int:id>', edit_commission, name='edit_commission'),
     path('add_matricula/<int:id>', add_matricula, name='add_matricula'),
+    path('change_visibility_lesson/<int:id>', change_visibility_lesson, name='change_visibility_lesson')
 ]

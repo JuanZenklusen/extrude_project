@@ -65,7 +65,11 @@
                                 {% if lesson.title == title_lesson %}
                                     style="color: var(--hover-links-color); font-weight: 800;"
                                 {% endif %}
-                            href="{% url 'play_lesson' slug=module.course.slug slug_l=lesson.slug %}">
+                            {% if lesson.visible == True %}
+                                href="{% url 'play_lesson' slug=module.course.slug slug_l=lesson.slug %}">
+                            {% else %}
+                                href="#">
+                            {% endif %}
                             Clase {{ lesson.nro_order }} <br> >> {{ lesson.title }}</a>
                         </div>
                         {% endfor %}

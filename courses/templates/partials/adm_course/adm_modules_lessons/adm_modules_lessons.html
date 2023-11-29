@@ -10,15 +10,24 @@
     {% for module in course.modules_set.all|dictsort:"nro_order" %}
     
         <div class="mt-4 row">
-        <div class="col">Modulo {{ forloop.counter }}- {{ module.title }}</div>
+        <div style="font-size: 20px;" class="col">Modulo {{ forloop.counter }}- {{ module.title }}</div>
         <div class="col-auto"><a href="{% url 'edit_module' module.id %}">Editar módulo</a></div>
         </div>
 
             {% for lesson in module.lessons_set.all|dictsort:"nro_order" %}
-                <div class="mt-2 row {% cycle 'bg-light border' 'bg-white border' %}" >
+                <div class="mt-2 row {% cycle 'bg-light border' 'bg-white border' %}">
                     <div class="col-auto">Clase {{ forloop.counter }}- </div>
-                    <div class="col">{{ lesson.title }}</div>
-                    <div class="col-auto"><a href="{% url 'edit_lesson' lesson.id %}">Editar clase</a></div>
+                    <div style="color: crimson;" class="col">{{ lesson.title }}</div>
+                    <div class="col"><a href="{% url 'edit_lesson' lesson.id %}">Editar clase</a></div>
+
+                    {% if lesson.visible == True %}
+                        <div style="color: green;" class="col-auto">Visible</div>
+                        <div class="col-auto"><a href="{% url 'change_visibility_lesson' lesson.id %}">Cambiar</a></div>
+                    {% else %}
+                        <div style="color: red;" class="col-auto">No Visible</div>
+                        <div class="col-auto"><a href="{% url 'change_visibility_lesson' lesson.id %}">Cambiar</a></div>
+                    {% endif %}
+
                 </div>
                 
             {% endfor %}

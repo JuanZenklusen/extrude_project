@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm, ContactForm
 from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import get_object_or_404
-from courses.models import Courses, Matricula, Modules, Lessons
+from courses.models import Courses, Matricula, Modules, Lessons, Exam, Commission
 from courses.calc import calcular_porcentaje_avance
 from django.db.models import Count
 from courses.cert_gen import generate_certf
@@ -108,6 +108,9 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 @login_required
 def profile(request):
     matriculas = Matricula.objects.filter(user=request.user)
+    commissions = Commission.objects.filter(matricula__in=matriculas)
+    courses = Courses.objects.filter(commission__in=commissions)
+    exams = Exam.objects.filter(course__in=courses)
 
     for matricula in matriculas:
         if matricula.last_lesson is None:
@@ -140,7 +143,12 @@ def profile(request):
         else:
             matricula.advance_percentage = 0
 
-    return render(request, 'profile.html', {'user_form': user_form, 'profile_form': profile_form, 'matriculas': matriculas})
+    return render(request, 'profile.html', {
+                                            'user_form': user_form, 
+                                            'profile_form': profile_form, 
+                                            'matriculas': matriculas,
+                                            'exams': exams,
+                                            })
 
 
 def generate_cert(request, slug):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option
+from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option, StudentExamAttempt
 
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
@@ -23,7 +23,7 @@ admin.site.register(Modules, ModulesAdmin)
 
 class LessonsAdmin(admin.ModelAdmin):
     fields = ('title', 'subtitle', 'nro_order', 'video', 'pdf', 'class_materials', 'text1',
-              'text2', 'text3', 'module')
+              'text2', 'text3', 'module', 'visible')
     list_display = ('title', 'id', 'slug', 'created_at', 'modified_at')
     list_filter = ('module', 'nro_order')
 
@@ -39,9 +39,9 @@ admin.site.register(Commission, CommissionAdmin)
 class MatriculaAdmin(admin.ModelAdmin):
     list_display = ('id', 'commission', 'user', 'last_lesson', 'modified_at')
     list_filter = ('commission', 'user', 'created_at', 'modified_at')
-    search_fields = ('id', 'user__username', 'commission__course__name')
+    search_fields = ('id', 'user__username', 'commission__course__name', 'approved')
     filter_horizontal = ('lessons_viewed',)
-    readonly_fields = ('last_lesson', 'lessons_viewed', 'slug', 'created_at', 'modified_at') 
+    readonly_fields = ('exam_percentage', 'approved', 'last_lesson', 'lessons_viewed', 'slug', 'created_at', 'modified_at') 
 
     def last_lesson_info(self, obj):
         if obj.last_lesson is None:
@@ -94,3 +94,12 @@ class OptionAdmin(admin.ModelAdmin):
     readonly_fields = ('id', 'created_at', 'modified_at')
 
 admin.site.register(Option, OptionAdmin)
+
+
+class StudentExamAttemptAdmin(admin.ModelAdmin):
+    readonly_fields = ('student', 'exam', 'timestamp', 'attempts_remaining', 'last_attempt_timestamp')
+
+    def has_add_permission(self, request):
+        return False  # No permitir la creación de nuevos objetos StudentExamAttempt desde el panel de administración
+
+admin.site.register(StudentExamAttempt, StudentExamAttemptAdmin)

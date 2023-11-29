@@ -118,7 +118,10 @@
 </div>
 
 {% if matriculas %}
-<h1>Tus cursos: </h1>
+<div class="container">
+    <hr>
+    <h1 class="text-center">Tus cursos: </h1>
+</div>
     {% for matricula in matriculas %}
     <div class="container">
         <div class="card">
@@ -133,16 +136,44 @@
                     - {{ matricula.last_lesson.title }}</h5>
                 <div class="container-button">
                     <a class="btn-info" 
-                    href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a> &nbsp; &nbsp;
+                    href="{% url 'play_lesson' slug=matricula.commission.course.slug slug_l=matricula.last_lesson.slug %}">Ir al curso</a>
+                    
+                    {% if matricula.approved == False %}
+                        {% if exams %}
+                            {% if matricula.advance_percentage == 100 %}
+                                {% for exam in exams %}
+                                    {% if exam.course == matricula.commission.course %}
+                                        {% if exam.visible == True %}
+                                            &nbsp; &nbsp;<a class="btn-info" href="{% url 'take_exam' matricula.slug exam.id %}">Examen: {{ exam.name }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% for exam in exams %}
+                                    {% if exam.course == matricula.commission.course %}
+                                        {% if exam.visible == True %}
+                                            &nbsp; &nbsp;<a class="btn-info disabled" href="#">Examen: {{ exam.name }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% else %}
+                            <p>No hay exámenes disponibles para este curso.</p>
+                        {% endif %}
+                    {% endif %}
+
                     {% if matricula.cert_emited == False %}
                         {% if matricula.advance_percentage == 100 %}
-                            <a class="btn-info" href="{% url 'generate_cert' matricula.slug %}">Generar Certificado</a>
+                            logica que, antes de que muestre generar certificado se fije si el curso esta aprobado.
+                            &nbsp; &nbsp;<a class="btn-info" href="{% url 'generate_cert' matricula.slug %}">Generar Certificado</a>
                         {% else %}
-                            <a class="btn-info disabled" href="#">Generar Certificado</a>
+                            &nbsp; &nbsp;<a class="btn-info disabled" href="#">Generar Certificado</a>
                         {% endif %}
                     {% else %}
-                        <a class="btn-info" href="{% url 'view_cert' matricula.slug %}">Ver Certificado</a>
+                        &nbsp; &nbsp;<a class="btn-info" href="{% url 'view_cert' matricula.slug %}">Ver Certificado</a>
                     {% endif %}
+
+
                 </div>
             </div>
         </div>
@@ -150,7 +181,9 @@
     </div>
     {% endfor %}
 {% else %}
+<div class="container">
     <p>aun no te has matriculado a ningun curso</p>
+</div>
 {% endif %}
 
 {% endblock %}

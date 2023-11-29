@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save
 import uuid
 from django.dispatch import receiver
 import os
+from django.utils import timezone
 
 
 class Courses(models.Model):
@@ -88,6 +89,7 @@ class Lessons(models.Model):
     text3 = models.TextField(null=True, blank=True, default="")
     class_materials = models.CharField(max_length=200, blank=True, null=True)
     pdf = models.FileField(blank=True, null=True, upload_to='pdfs')
+    visible = models.BooleanField(default=False)
     module = models.ForeignKey(Modules, on_delete=models.CASCADE)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -147,6 +149,8 @@ class Matricula(models.Model):
     cert_emited = models.BooleanField(default=False, blank=False, null=False)
     name_cert = models.CharField(max_length=100, blank=True, null=True, default="")
     date_cert_emited = models.DateTimeField(null=True, blank=True)
+    exam_percentage = models.FloatField(default=0.0, blank=True, null=True) #acumula el ultimo resultado del examen
+    approved = models.BooleanField(default=False)
     slug = models.SlugField(null=False, blank=False, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -213,3 +217,30 @@ class Option(models.Model):
 
     def __str__(self):
         return self.text
+
+
+
+class StudentExamAttempt(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    attempts_remaining = models.IntegerField(default=5)  # Número de intentos permitidos
+    last_attempt_timestamp = models.DateTimeField(null=True, blank=True)
+
+    def can_attempt_exam(self):
+        # Verificar si hay intentos restantes y si ha pasado al menos 24 horas desde el último intento
+        if self.attempts_remaining > 0:
+            if self.last_attempt_timestamp is None or \
+                    (timezone.now() - self.last_attempt_timestamp).days >= 1:
+                return True
+        return False
+
+    def record_attempt(self):
+        # Registrar un nuevo intento y actualizar la marca de tiempo del último intento
+        if self.can_attempt_exam():
+            self.attempts_remaining -= 1
+            self.last_attempt_timestamp = timezone.now()
+            self.save()
+
+    def __str__(self):
+        return f'{self.student.username} - {self.exam.name} - Attempts: {self.attempts_remaining}'

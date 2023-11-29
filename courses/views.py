@@ -4,14 +4,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import user_passes_test
 from django.views.generic import ListView
 from .models import ModuleRating
-from .models import Courses, Modules, Lessons, Matricula, Exam, Question, Option, Commission
+from .models import Courses, Modules, Lessons, Matricula, Exam, Question, Option, Commission, StudentExamAttempt
 from .calc import calcular_porcentaje_avance
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+
 
 
 def str_price(price):
-    return "{:,.2f}".format(price).replace(",", "temp").replace(".", ",").replace("temp", ".")
+    nro = "{:,.2f}".format(price).replace(",", "temp").replace(".", ",").replace("temp", ".")
+    if nro.endswith(',00'):
+        nro = nro[:-3]
+    return nro
 
 
 
@@ -248,6 +254,9 @@ def add_module(request, id):
         nro_order = request.POST.get('nro_order')
         course = course
         new_module = Modules.objects.create(title = title, subtitle = subtitle, nro_order = nro_order, course = course)
+
+        messages.success(request, 'Módulo creado correctamente.')
+
         return redirect(reverse('adm_modules_lessons', kwargs={'id': id}))
         
 
@@ -265,6 +274,9 @@ def edit_module(request, id):
         module.subtitle = request.POST.get('subtitle')
         module.nro_order = request.POST.get('nro_order')
         module.save()
+
+        messages.success(request, 'Módulo editado correctamente.')
+
         return redirect(reverse('adm_modules_lessons', kwargs={'id': course.id}))
 
     return render(request, 'partials/adm_course/adm_modules_lessons/edit_module.html', {'module': module, 'course': course, 'modules': modules})
@@ -303,6 +315,8 @@ def add_lesson(request, id):
             module = module_
         )
 
+        messages.success(request, 'Clase creada correctamente.')
+
         return redirect(reverse('adm_modules_lessons', kwargs={'id': course.id}))
 
 
@@ -340,10 +354,28 @@ def edit_lesson(request, id):
         lesson.text3 = text3
         lesson.class_materials = class_materials
         lesson.save()
+
+        messages.success(request, 'Clase editada correctamente.')
         
         return redirect(reverse('adm_modules_lessons', kwargs={'id': course.id}))
 
     return render(request, 'partials/adm_course/adm_modules_lessons/edit_lesson.html', {'module': module, 'course': course, 'lesson': lesson})
+
+
+@user_passes_test(lambda u: u.is_superuser, login_url='index')
+def change_visibility_lesson(request, id):
+    lesson = get_object_or_404(Lessons, id = id)
+    module = lesson.module
+    course = module.course
+
+    if lesson.visible == True:
+        lesson.visible = False
+        lesson.save()
+    else:
+        lesson.visible = True
+        lesson.save()
+
+    return redirect(reverse('adm_modules_lessons', kwargs={'id': course.id}))
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -424,3 +456,65 @@ def add_matricula(request, id):
         return redirect('adm_courses')
 
     return render(request, 'partials/commissions/matricula/add_matricula.html', {'commission': commission, 'users': users})
+
+
+
+@login_required
+def take_exam(request, slug, id):
+    matricula = get_object_or_404(Matricula, slug=slug)
+    exam = get_object_or_404(Exam, id=id)
+    
+    student_exam_attempt, created = StudentExamAttempt.objects.get_or_create(
+        student=request.user,
+        exam=exam
+    )
+
+    if not student_exam_attempt.can_attempt_exam():
+        # El estudiante no puede intentar el examen
+        messages.warning(request, 'Ya no tienes intentos disponibles para este examen.')
+        return redirect('profile')  # Redirige a la página de inicio o a donde desees
+    
+
+    attempts_remaining = student_exam_attempt.attempts_remaining
+
+    if request.method == 'POST':
+        # Procesar las respuestas del estudiante
+        total_questions = exam.question_set.count()
+        correct_answers = 0
+
+        for question in exam.question_set.all():
+            selected_option_id = request.POST.get(f'question_{question.id}', None)
+            print(selected_option_id)
+
+            if selected_option_id is not None:
+                selected_option = question.option_set.get(id=int(selected_option_id))
+                if selected_option.is_correct:
+                    correct_answers += 1
+
+        # Calcular el porcentaje correcto
+        if total_questions > 0:
+            exam_percentage = (correct_answers / total_questions) * 100.0
+            matricula.exam_percentage = exam_percentage
+
+            # Actualizar el campo approved si el estudiante supera el 70%
+            if exam_percentage >= 70.0:
+                matricula.approved = True
+
+            matricula.save()
+
+            student_exam_attempt.record_attempt()
+
+            #messages.success(request, f'Examen completado. Porcentaje de respuestas correctas: {exam_percentage}%')
+
+            # Redirigir a la vista de comparativa
+            return redirect('comparative_results', slug=slug, id=id)
+
+    return render(request, 'partials/take_exam/take_exam.html', {'matricula': matricula, 'exam': exam, 'attempts_remaining': attempts_remaining})
+
+
+@login_required
+def comparative_results(request, slug, id):
+    matricula = get_object_or_404(Matricula, slug=slug)
+    exam = get_object_or_404(Exam, id=id)
+
+    return render(request, 'partials/take_exam/comparative_results.html', {'matricula': matricula, 'exam': exam})

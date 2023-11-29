@@ -3,6 +3,13 @@
 {% block 'title' %} {{ lesson.title }} {% endblock %}
 
 {% block 'content' %}
+
+{% if lesson.visible == False %}
+    <div class="container">
+        <p style="color: red;" class="text-center">Esta clase aun no está disponible</p>
+    </div>
+{% else %}
+
 <progress value="{{ advance|floatformat:0 }}" max="100"></progress>
 <div class="play-lesson">
     <div class="lesson">
@@ -26,7 +33,11 @@
 
         <div class="complete-lesson">
             {% if next_lesson %}
-                <p>Siguiente:  <a href="{% url 'play_lesson' course.slug next_lesson.slug %}">{{ next_lesson.title }}</a></p>
+                {% if next_lesson.visible == True %}
+                    <p>Siguiente:  <a href="{% url 'play_lesson' course.slug next_lesson.slug %}">{{ next_lesson.title }}</a></p>
+                {% else %}
+                    <p>Siguiente:  <a class="btn btn-secondary disabled" href="#">{{ next_lesson.title }}</a></p>
+                {% endif %}
             {% else %}
                 <p>No hay más clases en este curso.</p>
             {% endif %}
@@ -41,6 +52,7 @@
         {% include 'partials/modules.html' %}
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block 'scripts' %}

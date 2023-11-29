@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Resultados del Examen {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <h5 class="mt-4 title-exam">Resultado de {{ exam.name }}</h5>
+    <h5 class="desc-exam">Descripción: {{ exam.description }}</h5>
+    <div class="row border">
+        <div class="row">
+            <p style="font-size: 50px;" class="text-center">Porcentaje de respuestas correctas:</p>
+        </div>
+        <div class="row">
+            <p style="font-size: 80px;" class="text-center">{{ matricula.exam_percentage }}%</p>
+        </div>
+    </div>
+
+    {% if matricula.exam_percentage >= 70.0 %}
+    <div class="row">
+        <p class="text-center" style="color: green; font-size: 50px;">APROBADO</p>
+    </div>
+    {% else %}
+    <div class="row">
+        <p class="text-center" style="color: rgb(128, 30, 0); font-size: 50px;">No aprobado</p>
+    </div>
+    {% endif %}
+
+    <div class="pt-4 pb-4 row-auto">
+        <a class="btn btn-secondary" href="{% url 'profile' %}">Volver</a>
+    </div>
+
+</div>
+
+{% endblock %}
