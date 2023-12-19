@@ -13,14 +13,28 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyETxahUJ5eFf4IGt3Z4iSnF2U5MOyI3q" crossorigin="anonymous">
 </head>
 
+<style>
+  #messages-container {
+      position: fixed;
+      top: 40px;
+      left: 5px;
+      z-index: 1000; /* Asegúrate de que el z-index sea mayor que otros elementos si es necesario */
+      width: 40%;
+      opacity: .85;
+  }
+</style>
+
 <body>
     {% include 'menu.html' %}
 
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-
-        </div>
+        <div id="messages-container">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+              </div>
+          {% endfor %}
+      </div>
     {% endfor %}
 
     <main>

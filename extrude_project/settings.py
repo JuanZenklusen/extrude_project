@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
-from local_settings import LS_DEBUG, LS_ALLOWED_HOSTS, LS_PASSWORD_DB
+from local_settings import LS_DEBUG, LS_ALLOWED_HOSTS, LS_PASSWORD_DB, LS_EMAIL_BACKEND, LS_EMAIL_HOST, LS_EMAIL_PORT, LS_EMAIL_USE_TLS, LS_EMAIL_HOST_USER, LS_EMAIL_HOST_PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,10 +40,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'profiles',
     'courses',
     'exams',
 ]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'extrude_project.urls'
@@ -72,6 +94,13 @@ TEMPLATES = [
         },
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 WSGI_APPLICATION = 'extrude_project.wsgi.application'
 
@@ -113,10 +142,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'es-ar'  # Código para español de Argentina
-
-TIME_ZONE = 'America/Argentina/Buenos_Aires'  # Zona horaria de Argentina
-
+ACCOUNT_LANGUAGE_CODE = 'es'
+USE_L10N = True
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Buenos_Aires'
 USE_I18N = True
 
 USE_TZ = True
@@ -146,6 +175,24 @@ LOGIN_REDIRECT_URL = 'index'
 
 LOGOUT_REDIRECT_URL = 'index'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'account_login'
 
 X_FRAME_OPTIONS = 'ALLOWALL'
+
+#if DEBUG:
+    #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#else:
+EMAIL_BACKEND = LS_EMAIL_BACKEND
+EMAIL_HOST = LS_EMAIL_HOST
+EMAIL_PORT = LS_EMAIL_PORT
+EMAIL_USE_TLS = LS_EMAIL_USE_TLS
+EMAIL_HOST_USER = LS_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = LS_EMAIL_HOST_PASSWORD
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1  # O el número de días que prefieras
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # O 'email' si prefieres autenticación solo por correo electrónico
+ACCOUNT_EMAIL_REQUIRED = True  # Ajusta según tus necesidades
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET = True

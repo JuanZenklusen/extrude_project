@@ -26,6 +26,29 @@
     </div>
     {% endif %}
 
+    <div class="row"><h5>Tus respuestas:</h5></div>
+    {% for question, answer, correct_answer in combined_questions_answers %}
+        {% if question != None %}
+            <div class="pb-4 pt-4 result-exam">
+                <div class="row">
+                    <span>Pregunta {{ forloop.counter }}: <span style="font-weight: 800;"> {{ question }}</span></span>
+                </div>
+                <div class="row">
+                    {% if answer == None %}
+                    <div class="row">
+                        <span>No has respondido</span>
+                    </div>
+                        
+                    {% else %} 
+                    <div class="row">
+                        <span>{{ answer }} - {% if correct_answer == True %} <span style="color: rgb(2, 189, 2) ;"> Respuesta correcta </span> {% else %} <span style="color: red ;"> Respuesta incorrecta </span> {% endif %}</span>
+                    </div>
+                    {% endif %} 
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
     <div class="pt-4 pb-4 row-auto">
         <a class="btn btn-secondary" href="{% url 'profile' %}">Volver</a>
     </div>

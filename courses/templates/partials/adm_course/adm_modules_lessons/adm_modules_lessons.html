@@ -20,6 +20,26 @@
                     <div style="color: crimson;" class="col">{{ lesson.title }}</div>
                     <div class="col"><a href="{% url 'edit_lesson' lesson.id %}">Editar clase</a></div>
 
+                    {% with homework=lesson.homework_set.first %}
+                        {% if homework %}
+                            <div class="col">
+                                <a style="color: green;" href="{% url 'edit_homework' lesson.id homework.id %}">Editar tarea</a>
+                            {% with submits=homework.submithomework_set.all %}
+                                {% if submits %}
+                                    &nbsp;&nbsp;-&nbsp;&nbsp;<a href="{% url 'view_submited_homeworks' homework.id %}">{{ submits|length }}</a>
+                                {% endif %}
+                            {% endwith %}
+                            </div>
+                                                        
+                        {% else %}
+                            <div class="col">
+                                <a href="{% url 'add_homework' lesson.id %}">Agregar tarea</a>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+
+                    
+
                     {% if lesson.visible == True %}
                         <div style="color: green;" class="col-auto">Visible</div>
                         <div class="col-auto"><a href="{% url 'change_visibility_lesson' lesson.id %}">Cambiar</a></div>

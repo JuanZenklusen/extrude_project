@@ -8,12 +8,12 @@
     <h5 class="mt-4 title-exam">{{ exam.name }}</h5>
     <h5 class="desc-exam">Descripción: {{ exam.description }}</h5>
 
-    <p style="font-size: 25px; color: rgb(196, 0, 0); background-color: pink; border-radius: 15px; padding: 20px;">Importante: Te quedan {{attempts_remaining}} intentos para rendir correctamente este examen, y sólo puedes intentarlo una vez cada 24 horas.</p>
+    <p style="font-size: 21px; color: rgb(196, 0, 0); background-color: rgb(255, 214, 221); border-radius: 15px; padding: 20px;">Importante: Te quedan {{attempts_remaining}} intentos para rendir correctamente este examen, y sólo puedes intentarlo una vez cada 24 horas.</p>
 
     <form method="post" action="{% url 'take_exam' slug=matricula.slug id=exam.id %}">
         {% csrf_token %}
         
-        {% for question in exam.question_set.all %}
+        {% for question in random_questions %}
         <div class="pb-4 px-3 row border bloque-pregunta">
             <p class="mt-3" style="font-size: 20px; font-weight: 800;">
                 {{ forloop.counter }}- {{ question.text }}:
@@ -21,7 +21,7 @@
 
             {% for option in question.option_set.all %}
             <div class="row bloque-respuestas">
-                <div class="pt-3 col {% cycle 'bg-light border' 'bg-white border' %}">
+                <div class="pb-2 pt-3 col {% cycle 'bg-light border' 'bg-white border' %}">
                     &nbsp;&nbsp;&nbsp;<input type="radio" name="question_{{ question.id }}" value="{{ option.id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label id="danger-outlined">{{ forloop.counter }}- {{ option.text }}</label>
                 </div>
@@ -32,7 +32,7 @@
         <hr>
         {% endfor %}
 
-        <button type="submit" class="btn btn-primary mt-3">Enviar respuestas</button>
+        <button type="submit" class="mb-5 btn btn-primary mt-3">Enviar respuestas</button>
     </form>
 
 </div>

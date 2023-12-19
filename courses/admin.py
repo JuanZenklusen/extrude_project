@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option, StudentExamAttempt
+from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option, StudentExamAttempt, Homework, SubmitHomework, QuestionsAndAnswers
 
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
@@ -41,7 +41,7 @@ class MatriculaAdmin(admin.ModelAdmin):
     list_filter = ('commission', 'user', 'created_at', 'modified_at')
     search_fields = ('id', 'user__username', 'commission__course__name', 'approved')
     filter_horizontal = ('lessons_viewed',)
-    readonly_fields = ('exam_percentage', 'approved', 'last_lesson', 'lessons_viewed', 'slug', 'created_at', 'modified_at') 
+    readonly_fields = ('exam_percentage', 'approved', 'last_lesson', 'lessons_viewed', 'slug', 'created_at', 'modified_at')
 
     def last_lesson_info(self, obj):
         if obj.last_lesson is None:
@@ -97,9 +97,29 @@ admin.site.register(Option, OptionAdmin)
 
 
 class StudentExamAttemptAdmin(admin.ModelAdmin):
-    readonly_fields = ('student', 'exam', 'timestamp', 'attempts_remaining', 'last_attempt_timestamp')
+    list_display = ('student', 'exam', 'timestamp', 'attempts_remaining', 'last_attempt_timestamp')
+    #readonly_fields = ('student', 'exam', 'timestamp', 'attempts_remaining', 'last_attempt_timestamp')
 
     def has_add_permission(self, request):
         return False  # No permitir la creación de nuevos objetos StudentExamAttempt desde el panel de administración
 
 admin.site.register(StudentExamAttempt, StudentExamAttemptAdmin)
+
+
+class HomeworkAdmin(admin.ModelAdmin):
+    list_display = ['title', 'description', 'deadline', 'lesson', 'created_at', 'modified_at']
+    search_fields = ['title', 'lesson__title', 'lesson__module__course__name']
+
+admin.site.register(Homework, HomeworkAdmin)
+
+class SubmitHomeworkAdmin(admin.ModelAdmin):
+    list_display = ['homework', 'student', 'submitted_at']
+    search_fields = ['homework__title', 'student__username']
+
+admin.site.register(SubmitHomework, SubmitHomeworkAdmin)
+
+
+class QuestionsAndAnswersAdmin(admin.ModelAdmin):
+    readonly_fields = ('matricula', 'exam', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'created_at')
+
+admin.site.register(QuestionsAndAnswers, QuestionsAndAnswersAdmin)

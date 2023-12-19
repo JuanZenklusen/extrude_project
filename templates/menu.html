@@ -4,8 +4,8 @@
     
     <div>
         {% if user.is_superuser %}
-            <a style="color: rgb(255, 106, 106);" href="{% url 'adm_courses' %}">Administrar cursos</a>
-            <a style="color: rgb(255, 106, 106);" href="{% url 'adm_super' %}">Examenes</a>
+            <a style="color: var(--hover-links-color);" href="{% url 'adm_courses' %}">Administrar cursos</a>
+            <a style="color: var(--hover-links-color);" href="{% url 'adm_super' %}">Examenes</a>
         {% endif %}
         <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>
         <a href="{% url 'courses' %}"><span class="fa-solid fa-computer">&nbsp</span>Cursos</a>
@@ -18,8 +18,8 @@
     <div>
         <a href="{% url 'index' %}"><span class="fa-solid fa-house">&nbsp</span>Inicio</a>
         <a href="{% url 'courses' %}"><span class="fa-solid fa-computer">&nbsp</span>Cursos</a>
-        <a href="{% url 'login' %}"><span class="fas fa-user">&nbsp</span>Iniciar sesión</a>
-        <a href="{% url 'create_user' %}"><span class="fa-solid fa-user-plus">&nbsp</span>Registrarse</a>
+        <a href="{% url 'account_login' %}"><span class="fas fa-user">&nbsp</span>Iniciar sesión</a>
+        <a href="{% url 'account_signup' %}"><span class="fa-solid fa-user-plus">&nbsp</span>Registrarse</a>
     </div>
 
     {% endif %}

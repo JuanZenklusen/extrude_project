@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Editar tarea de hogar {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <h5 class="mt-4 mb-4 title-exam">Agregar tarea para: {{ lesson.title }}</h5>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="h_title">Titulo de la tarea/trabajo práctico:</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="h_title" type="text" name="title" 
+                placeholder="Primer trabajo práctico" autocomplete="off" value="{{ homework.title }}" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <label class="form-label" for="h_description">Redactar actividad:</label>
+            <textarea class="mb-3 form-control border-3 border-primary-subtle" name="description" id="h_description" rows="10" required>{{ homework.description }}</textarea>
+        </div>
+
+        <input class="mb-2 btn btn-success" type="submit" value="Guardar tarea" id="submitBtn">
+
+    </form>
+
+    <a class="mb-2 btn btn-secondary" href="{% url 'adm_modules_lessons' lesson.module.course.id %}">Volver</a>
+
+</div>
+
+{% endblock %}

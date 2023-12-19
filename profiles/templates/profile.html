@@ -164,8 +164,11 @@
 
                     {% if matricula.cert_emited == False %}
                         {% if matricula.advance_percentage == 100 %}
-                            logica que, antes de que muestre generar certificado se fije si el curso esta aprobado.
-                            &nbsp; &nbsp;<a class="btn-info" href="{% url 'generate_cert' matricula.slug %}">Generar Certificado</a>
+                            {% if matricula.approved == True %}
+                                &nbsp; &nbsp;<a class="btn-info" href="{% url 'generate_cert' matricula.slug %}">Generar Certificado</a>
+                            {% else %}
+                                &nbsp; &nbsp;<a class="btn-info disabled" href="#">Generar Certificado</a>
+                            {% endif %}
                         {% else %}
                             &nbsp; &nbsp;<a class="btn-info disabled" href="#">Generar Certificado</a>
                         {% endif %}
@@ -182,7 +185,7 @@
     {% endfor %}
 {% else %}
 <div class="container">
-    <p>aun no te has matriculado a ningun curso</p>
+    <h1 class="text-center">Aun no te has matriculado a ningun curso</h1>
 </div>
 {% endif %}
 

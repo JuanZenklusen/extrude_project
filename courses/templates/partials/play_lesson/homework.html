@@ -1,0 +1,24 @@
+{% if homework %}
+
+    {% if homework_delivered %}
+        <div class="pt-2 pb-2 mt-4 row lesson-homework">
+            <span><i class="fa-solid fa-pen-to-square"></i>Actividad entregable: {{ homework.title }}</span>
+        </div>
+        <div class="pt-2 pb-2 mb-4 px-2 row homework-description">
+            <span class="pt-2 pb-2" style="color: green"><i class="fa-solid fa-file-circle-check"></i>Ya has realizado la entrega.</span>
+        </div>
+    {% else %}
+        <div class="pt-2 pb-2 mt-4 row lesson-homework">
+            <span><i class="fa-solid fa-pen-to-square"></i>Actividad entregable: {{ homework.title }}</span>
+        </div>
+        <div class="pt-2 pb-2 mb-4 px-2 row homework-description">
+            <span class="pt-2 pb-2">{{ homework.description }}</span>
+            {% if homework.deadline >= now %}
+                <span class="pt-4 pb-2 text-end" style="color: red;">Disponible hasta el {{ homework.deadline }}</span>
+                <a class="btn btn-success" href="{% url 'submit_homework' slug=lesson.slug %}">Entregar actividad</a>
+            {% else %}
+                <span class="pt-4 pb-2 text-end" style="color: red;">Fuera de término para entregar la actividad</span>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endif %}

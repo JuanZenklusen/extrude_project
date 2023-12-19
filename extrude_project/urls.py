@@ -25,4 +25,5 @@ urlpatterns = [
     path('adm_curses/', include('courses.urls_adm')), #urls_adm.py de courses, hace la logica de el administrador de cursos
     path('exams/', include('exams.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

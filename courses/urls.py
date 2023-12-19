@@ -1,9 +1,10 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from .views import courses, view_course, play_lesson, no_matriculado, take_exam, comparative_results
+from .views import courses, view_course, play_lesson, no_matriculado, take_exam, comparative_results, submit_homework
 
 urlpatterns = [
     path('', courses, name='courses'),
+    path('submit_homework/<slug:slug>', submit_homework, name='submit_homework'),
     path('no_matriculado', no_matriculado, name='no_matriculado'),
     path('take_exam/<slug:slug>/<int:id>', take_exam, name='take_exam'),
     path('comparative_results/<slug:slug>/<int:id>', comparative_results, name='comparative_results'),

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Agregar tarea de hogar {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <h5 class="mt-4 mb-4 title-exam">Agregar tarea para: {{ lesson.title }}</h5>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label class="form-label" for="h_title">Titulo de la tarea/trabajo práctico:</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" id="h_title" type="text" name="title" 
+                placeholder="Primer trabajo práctico" autocomplete="off" required>
+            </div>
+            <div class="col-auto">
+                <label class="form-label" for="h_days">Establecer cantidad de días para entregar la actividad:</label>
+                <input class="mb-3 form-control border-3 border-primary-subtle" type="number" name="days" id="h_days" value="7" required>
+            </div>
+        </div>
+        
+        <div class="row">
+            <label class="form-label" for="h_description">Redactar actividad:</label>
+            <textarea class="mb-3 form-control border-3 border-primary-subtle" name="description" id="h_description" rows="10" required></textarea>
+        </div>
+
+        <input class="mb-2 btn btn-success" type="submit" value="Guardar tarea" id="submitBtn">
+
+    </form>
+
+    <a class="mb-2 btn btn-secondary" href="{% url 'adm_modules_lessons' lesson.module.course.id %}">Volver</a>
+
+</div>
+
+<script>
+    document.getElementById('h_days').addEventListener('change', function() {
+        var daysInput = this.value;
+        var submitBtn = document.getElementById('submitBtn');
+
+        // Habilitar o deshabilitar el botón de envío según la condición
+        if (daysInput < 1) {
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+
+{% endblock %}

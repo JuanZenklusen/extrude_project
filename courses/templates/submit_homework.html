@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Estregar actividad clase: {{ lesson.title }} {% endblock %}
+
+{% block 'content' %}
+<div class="container">
+    <div class="pt-2 pb-2 mt-5 row lesson-homework">
+        <span><i class="fa-solid fa-pen-to-square"></i>Actividad entregable: {{ homework.title }}</span>
+    </div>
+    <div class="pt-2 pb-2 mb-4 px-2 row homework-description">
+        <span class="pt-2 pb-2">{{ homework.description }}</span>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 row">
+            <label class="form-label" for="h_file">Cargar archivo</label>
+            <input class="form-control border-3 border-primary-subtle" type="file" id="h_file" name="n_file" required>
+        </div>
+        <div class="mb-3 ">
+            <input class="btn btn-success" type="submit" value="Realizar entrega">
+        </div>
+    </form>
+    <a class="mt-2 mb-4 btn btn-secondary" href="{% url 'play_lesson' slug=course.slug slug_l=lesson.slug %}">Volver sin guardar</a>
+    <div style="height: 15vh;" class="row"></div>
+</div>
+{% endblock %}

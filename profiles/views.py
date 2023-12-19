@@ -16,6 +16,7 @@ from django.db.models import Count
 from courses.cert_gen import generate_certf
 from datetime import datetime
 from courses.views import str_price
+from allauth.account.utils import send_email_confirmation
 
 
 def index(request):
@@ -61,14 +62,30 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form})
 
 
-    def post(self, request, *args, **kwargs):
+    '''def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
         if form.is_valid():
             form.save()
 
+            allauth_email_confirmation(request, user)
+
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}')
+            messages.success(request, f'Usuario creado: {username}')
+
+            return redirect(to='/')'''
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            # Llama a la función de allauth para enviar el correo electrónico de confirmación
+            send_email_confirmation(request, user, signup=True)
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Usuario creado: {username}')
 
             return redirect(to='/')
 

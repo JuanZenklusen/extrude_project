@@ -63,7 +63,6 @@ class Modules(models.Model):
     def __str__(self):
         return f'({self.course.name}) - {self.nro_order}) {self.title} '
     
-
 def set_slug_modules(sender, instance, *args, **kwargs):
     if instance.title and not instance.slug:
         slug = slugify(instance.title)
@@ -78,7 +77,50 @@ def set_slug_modules(sender, instance, *args, **kwargs):
 pre_save.connect(set_slug_modules, sender=Modules)
 
 
+class Lessons(models.Model):
+    title = models.CharField(max_length=200, blank=False, null=False)
+    subtitle = models.CharField(max_length=500, blank=True, null=True)
+    nro_order = models.IntegerField()
+    video = models.CharField(max_length=200, blank=True, null=True)
+    text1 = models.TextField(null=True, blank=True, default="")
+    text2 = models.TextField(null=True, blank=True, default="")
+    text3 = models.TextField(null=True, blank=True, default="")
+    class_materials = models.CharField(max_length=200, blank=True, null=True)
+    pdf = models.FileField(blank=True, null=True, upload_to='pdfs')
+    visible = models.BooleanField(default=False)
+    module = models.ForeignKey(Modules, on_delete=models.CASCADE)
+    slug = models.SlugField(null=False, blank=False, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f'{self.id} - {self.title}'
+    
+    def save(self, *args, **kwargs):
+        if self.pdf:
+            base_name, extension = os.path.splitext(self.pdf.name)
+            title = self.title
 
+            unique_name = f"{title}-{timezone.now().strftime('%Y%m%d%H%M%S')}{extension}"
+            self.pdf.name = unique_name
+
+        super().save(*args, **kwargs)
+
+def set_slug_lessons(sender, instance, *args, **kwargs):
+    if instance.title and not instance.slug:
+        slug = slugify(instance.title)
+
+        while Lessons.objects.filter(slug=slug).exists():
+            slug = slugify(
+                '{}-{}'.format(instance.title, str(uuid.uuid4())[:8])
+            )
+
+        instance.slug = slug
+
+pre_save.connect(set_slug_lessons, sender=Lessons)
+
+
+'''
 class Lessons(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     subtitle = models.CharField(max_length=500, blank=True, null=True)
@@ -122,8 +164,40 @@ def set_slug_and_rename_pdf(sender, instance, *args, **kwargs):
     
     # Asignar el nuevo nombre del archivo PDF si es necesario
     if new_pdf_name:
-        instance.pdf.name = new_pdf_name
+        instance.pdf.name = new_pdf_name'''
 
+
+class Homework(models.Model): #Crear tarea para una lección/clase específica
+    title = models.CharField(max_length=200, blank=False, null=False) #El título de la tarea.
+    description = models.TextField(blank=True, null=True) #descripción más detallada de la tarea.
+    deadline = models.DateTimeField(blank=True, null=True) #La fecha y hora límite para la entrega de la tarea.
+    lesson = models.ForeignKey(Lessons, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.id} - {self.title}'
+
+
+class SubmitHomework(models.Model):
+    file = models.FileField(blank=True, null=True, upload_to='homework_files')
+    homework = models.ForeignKey(Homework, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    submitted_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.homework.title} - {self.student}'
+
+    def save(self, *args, **kwargs):
+        if self.file:
+            base_name, extension = os.path.splitext(self.file.name)
+            student_username = self.student.username
+
+            # Utilizar solo el nombre del estudiante y la marca de tiempo
+            unique_name = f"{student_username}-{timezone.now().strftime('%Y%m%d%H%M%S')}{extension}"
+            self.file.name = unique_name
+
+        super().save(*args, **kwargs)
 
 
 class Commission(models.Model):
@@ -219,13 +293,12 @@ class Option(models.Model):
         return self.text
 
 
-
 class StudentExamAttempt(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    attempts_remaining = models.IntegerField(default=5)  # Número de intentos permitidos
-    last_attempt_timestamp = models.DateTimeField(null=True, blank=True)
+    attempts_remaining = models.IntegerField(default=5)  # Número de intentos permitidos y los que le restan
+    last_attempt_timestamp = models.DateTimeField(null=True, blank=True) #Registro de la fecha del ultimo intento
 
     def can_attempt_exam(self):
         # Verificar si hay intentos restantes y si ha pasado al menos 24 horas desde el último intento
@@ -244,3 +317,60 @@ class StudentExamAttempt(models.Model):
 
     def __str__(self):
         return f'{self.student.username} - {self.exam.name} - Attempts: {self.attempts_remaining}'
+
+
+'''class StudentExamAttempt(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    attempts_remaining = models.IntegerField(default=5)  # Número de intentos permitidos y los que le restan
+    last_attempt_timestamp = models.DateTimeField(null=True, blank=True) #Registro de la fecha del último intento
+    selected_options = models.JSONField(null=True, blank=True)  # Almacenar IDs de las respuestas seleccionadas
+
+    def can_attempt_exam(self):
+        # Verificar si hay intentos restantes y si ha pasado al menos 24 horas desde el último intento
+        if self.attempts_remaining > 0:
+            if self.last_attempt_timestamp is None or \
+                    (timezone.now() - self.last_attempt_timestamp).days >= 1:
+                return True
+        return False
+
+    def record_attempt(self, selected_options):
+        # Registrar un nuevo intento y actualizar la marca de tiempo del último intento
+        if self.can_attempt_exam():
+            self.attempts_remaining -= 1
+            self.last_attempt_timestamp = timezone.now()
+            self.selected_options = selected_options  # Almacenar los IDs de las respuestas seleccionadas
+            self.save()
+
+    def __str__(self):
+        return f'{self.student.username} - {self.exam.name} - Attempts: {self.attempts_remaining}'''
+
+
+class QuestionsAndAnswers(models.Model):
+    matricula = models.ForeignKey(Matricula, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    q1 = models.CharField(max_length=400, default="", null=True) #q representa a las preguntas que le tocaron en el examen, almacena la id de la pregunta
+    q2 = models.CharField(max_length=400, default="", null=True)
+    q3 = models.CharField(max_length=400, default="", null=True)
+    q4 = models.CharField(max_length=400, default="", null=True)
+    q5 = models.CharField(max_length=400, default="", null=True)
+    q6 = models.CharField(max_length=400, default="", null=True)
+    q7 = models.CharField(max_length=400, default="", null=True)
+    q8 = models.CharField(max_length=400, default="", null=True)
+    q9 = models.CharField(max_length=400, default="", null=True)
+    q10 = models.CharField(max_length=400, default="", null=True)
+    a1 = models.CharField(max_length=5, default="", null=True) #a representa a las respuestas que marcó como correctas en el ultimo examen, almacena la id de la pregunta
+    a2 = models.CharField(max_length=5, default="", null=True)
+    a3 = models.CharField(max_length=5, default="", null=True)
+    a4 = models.CharField(max_length=5, default="", null=True)
+    a5 = models.CharField(max_length=5, default="", null=True)
+    a6 = models.CharField(max_length=5, default="", null=True)
+    a7 = models.CharField(max_length=5, default="", null=True)
+    a8 = models.CharField(max_length=5, default="", null=True)
+    a9 = models.CharField(max_length=5, default="", null=True)
+    a10 = models.CharField(max_length=5, default="", null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'({self.pk}) {self.matricula}-{self.created_at}'

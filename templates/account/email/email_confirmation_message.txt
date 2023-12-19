@@ -1,0 +1,8 @@
+{% extends "account/email/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}{% user_display user as user_display %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Recibiste este correo electronico porque el usuario {{ user_display }} ha declarado esta cuenta para el sitio {{ site_domain }}.
+
+Para confirmar su cuenta haga click en el siguiente link {{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock content %}

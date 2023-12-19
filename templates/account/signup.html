@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load allauth account socialaccount %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block 'title' %}{% endblock %}</title>
+    {% include 'partials/link-css.html' %}
+    {% block 'styles' %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyETxahUJ5eFf4IGt3Z4iSnF2U5MOyI3q" crossorigin="anonymous">
+    {% endblock %}
+</head>
+{% block 'content' %}
+<style>
+    .card-allauth{
+        width: 50vw;
+        margin: 50px auto;
+        border: 1px solid gray;
+        border-radius: 20px;
+        box-shadow: 1px 5px 10px gray;
+        padding: 20px;
+    }
+
+    div .col a {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+    }
+
+    div .col a:hover {
+        color: rgb(228, 228, 228);
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    button{
+        border: 0px solid;
+        width: 100%;
+        background-color: rgb(149, 175, 231);
+        padding: 5px;
+        border-radius: 5px;
+        transition: .5s;
+        font-size: 1.2rem;
+    }
+
+    button:hover{
+        background-color: rgb(40, 77, 158);
+        color: aliceblue;
+    }
+
+    form {
+        margin: 20px;
+        padding: 10px;
+    }
+
+    input:not([type="checkbox"]) {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    .errorlist{
+        color: red;
+    }
+</style>
+
+<div class="card-allauth">
+
+
+    <div class="row text-center">
+    {% element h1 %}
+        {% trans "Sign Up" %}
+    {% endelement %}
+    </div>
+
+
+    <div style="height: 50px; border-radius: 25px; width: 90%; margin: auto; background-color: rgb(226, 226, 226); transition: .5s;" class="row mt-2 mb-2 bg-primary hover">
+        <div class="col-1">
+            <img style="height: 46px; border-radius: 23px; position: relative; left: -10px; top: 2px;" src="/static/google.png" alt="">
+        </div>
+        <div style="padding-top: 11px;" class="col">
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
+    </div>
+
+    <p class="text-center">
+        {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+    </p>
+    {% url 'account_signup' as action_url %}
+    {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+        {% slot body %}
+            {% csrf_token %}
+            {% element fields form=form unlabeled=True %}
+            {% endelement %}
+            {% if redirect_field_value %}
+                <input type="hidden"
+                       name="{{ redirect_field_name }}"
+                       value="{{ redirect_field_value }}" />
+            {% endif %}
+        {% endslot %}
+        {% slot actions %}
+            {% element button tags="prominent,signup" type="submit" %}
+                {% trans "Sign Up" %}
+            {% endelement %}
+        {% endslot %}
+    {% endelement %}
+    
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    
+    var element_google = document.querySelector('a[href="/accounts/google/login/?process=login"]');
+    if (element_google) {
+        element_google.innerHTML = 'Regístrate con google';
+    }
+
+});
+
+
+</script>
+
+{% endblock %}

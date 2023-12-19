@@ -1,12 +1,14 @@
 :root{
-    --primary-color: #0c0038;
-    --hover-links-color: #ff7171;
+    --primary-color: #1E3747;
+    --zprimary-color: #0c0038;
+    --hover-links-color: #64B6E5;
+    --zhover-links-color: #ff7171;
     --footer-color: #181818;
     --font-size-text: 1rem;
-    --font-text-color: #181818;
+    --font-text-color: #1E3747;
+    --zfont-text-color: #181818;
     --time-transitions: .3s;
     --color-gray:#d4d4d4;
-
 }
 
 *{
@@ -36,6 +38,7 @@ html, body{
     padding-right: 3%;
     transition: var(--time-transitions);
 }
+
 
 .hero-image h1{
     font-size: 4rem;
@@ -82,21 +85,18 @@ html, body{
 }
 
 .footer{
-    min-height: 100px;
+    min-height: 200px;
     background-color: var(--footer-color);
     color: #ffffff;
+}
+
+.footer-img{
+    height: 30vh;
 }
 
 .footer div{
     height: 100%;
     margin: auto;
-    width: 85vw;
-    display: flex;
-    align-items: center;
-    justify-content:space-evenly;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    flex-direction: column;
 }
 
 .footer div a{
@@ -644,23 +644,26 @@ input.form-control:-webkit-autofill:focus {
 }
 
 .bloque-pregunta{
-    background-color: rgba(255, 113, 113, 0.212);
+    color: var(--hover-links-color);
+    background-color: var(--footer-color);
     border-radius: 10px;
     transition: var(--time-transitions);
 }
 
 .bloque-pregunta:hover{
-    background-color: rgba(255, 113, 113, 0.562);
+    color: white;
+    background-color: var(--primary-color);
     border-radius: 10px;
 }
 
 .bloque-respuestas{
+    color: black;
     transition: var(--time-transitions);
 }
 
 .bloque-respuestas:hover{
     background-color: var(--hover-links-color);
-    box-shadow: 5px 5px 15px gray;
+    box-shadow: 0px 0px 15px rgb(223, 223, 223);
 }
 
 .title-exam{
@@ -688,4 +691,36 @@ input.form-control:-webkit-autofill:focus {
 
 .top-edit-course:hover{
     color: #ff7171;
+}
+
+.lesson-homework{
+    background-color: var(--primary-color);
+    font-size: 20px;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+.lesson-homework span{
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    color: var(--hover-links-color);
+}
+
+.homework-description{
+    border: 1px solid gray;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+.result-exam{
+    padding-left: 15px;
+    transition: var(--time-transitions);
+    border-radius: 5px;
+}
+
+.result-exam:hover{
+    background-color: rgb(235, 235, 235);
+    box-shadow: 0px 0px 15px gray;
+    scale: 1.01;
 }
