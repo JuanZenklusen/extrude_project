@@ -34,11 +34,36 @@
                 </div>
                 <p style="color: crimson;">(Importante asignar correctamente el nro de orden para ordenar el orden de los módulos)</p>
 
+                <hr>
+
+                <div class="mt-4 row">
+                    <div class="col-auto">
+                        <div class="col-auto text-center">
+                            <input style="scale: 1.8;" type="checkbox" name="check_zoom" id="check_z"><br>Link de Zoom
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label" for="lzoom">Link de Zoom</label>
+                        <input class="mb-3 form-control border-3 border-primary-subtle" id="lzoom" type="text" name="l_zoom" placeholder="Link de zoom" autocomplete="off">
+                    </div>
+                    <div class="col-auto">
+                        <label class="form-label" for="id_day_time">Fecha y Hora:</label>
+                        <input class="mb-3 form-control border-3 border-primary-subtle" type="datetime-local" name="day_time" id="id_day_time">
+                    </div>
+                    
+                </div>
+
+                <hr>
+
                 <label class="form-label" for="l_video">Link de video de la clase</label>
                 <input class="mb-3 form-control border-3 border-primary-subtle" id="l_video" type="text" name="video" placeholder="Link de video de la clase" autocomplete="off">
 
+                <hr>
+
                 <label for="pdf">PDF:</label>
                 <input class="mb-3 form-control border-3 border-primary-subtle" type="file" name="pdf" accept=".pdf">
+
+                <hr>
 
                 <label class="form-label" for="l_text1">Párrafo/Texto 1</label> 
                 <textarea class="mb-3 form-control border-3 border-primary-subtle" name="text1" id="l_text1" rows="10"></textarea>
@@ -49,8 +74,12 @@
                 <label class="form-label" for="l_text3">Párrafo/Texto 3</label> 
                 <textarea class="mb-3 form-control border-3 border-primary-subtle" name="text3" id="l_text3" rows="10"></textarea>
 
+                <hr>
+
                 <label class="form-label" for="l_class_materials">Link para acceder al drive con los archivos de la clase</label>
                 <input class="mb-3 form-control border-3 border-primary-subtle" id="l_class_materials" type="text" name="class_materials" placeholder="Link de drive" autocomplete="off">
+                
+                <hr>
 
                 <input class="mb-2 btn btn-success" type="submit" value="Guardar módulo">
                 <a class="mb-2 btn btn-secondary" href="{% url 'adm_modules_lessons' course.id %}">Volver sin guardar</a>

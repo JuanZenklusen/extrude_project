@@ -23,7 +23,7 @@ admin.site.register(Modules, ModulesAdmin)
 
 class LessonsAdmin(admin.ModelAdmin):
     fields = ('title', 'subtitle', 'nro_order', 'video', 'pdf', 'class_materials', 'text1',
-              'text2', 'text3', 'module', 'visible')
+              'text2', 'text3', 'module', 'visible', 'zoom', 'link_zoom', 'day_time')
     list_display = ('title', 'id', 'slug', 'created_at', 'modified_at')
     list_filter = ('module', 'nro_order')
 

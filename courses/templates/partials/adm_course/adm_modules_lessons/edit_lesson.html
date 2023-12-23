@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block 'title' %} Agregar Clase {% endblock %}
+{% block 'title' %} Editar Clase {% endblock %}
 
 {% block 'content' %}
 
 <div class="container">
     <div class="row">
-        <h5 class="mt-4 mb-4 title-exam">Nueva clase para: {{ course.name }} - Modulo {{ module.nro_order }}: {{ module.title }} </h5>
+        <h5 class="mt-4 mb-4 title-exam">Editar clase {{ lesson.title }}</h5>
 
         <div class="row">
             <form method="POST" enctype="multipart/form-data">
@@ -36,6 +36,28 @@
                     </div>
                 </div>
                 <p style="color: crimson;">(Importante asignar correctamente el nro de orden para ordenar el orden de los módulos)</p>
+
+                <hr>
+
+                <div class="mt-4 row">
+                    <div class="col-auto">
+                        <div class="col-auto text-center">
+                            <input style="scale: 1.8;" type="checkbox" name="check_zoom" id="check_z" {% if lesson.zoom %}checked{% endif %}><br>Link de Zoom
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-label" for="lzoom">Link de Zoom</label>
+                        <input class="mb-3 form-control border-3 border-primary-subtle" id="lzoom" type="text" name="l_zoom" placeholder="Link de zoom" autocomplete="off" value="{{ lesson.link_zoom }}">
+                    </div>
+                    <div class="col-auto">
+                        <label class="form-label" for="id_day_time">Fecha y Hora:</label>
+                        <input class="mb-3 form-control border-3 border-primary-subtle" type="datetime-local" name="day_time" id="id_day_time" value="{{ lesson.day_time|date:'Y-m-d\TH:i' }}">
+                        <button type="button" id="clear-day-time">Limpiar</button>
+                    </div>
+                    
+                </div>
+
+                <hr>
 
                 <label class="form-label" for="l_video">Link de video de la clase</label>
                 <input class="mb-3 form-control border-3 border-primary-subtle" id="l_video" 
@@ -70,4 +92,17 @@
     
 </div>
 
+
+{% endblock %}
+
+{% block 'scripts' %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Asigna una función al evento de clic del botón "Limpiar"
+        document.getElementById("clear-day-time").addEventListener("click", function() {
+            // Establece el valor del campo de fecha y hora en blanco
+            document.getElementById("id_day_time").value = "";
+        });
+    });
+</script>
 {% endblock %}

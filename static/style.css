@@ -281,6 +281,7 @@ html, body{
     box-shadow: 3px 5px 15px gray;
     transition: cubic-bezier(0.445, 0.05, 0.55, 0.95) var(--time-transitions);
     background-color: var(--primary-color);
+    border: 1px solid rgb(164, 58, 173);
 }
 
 .container-box-card-course:hover{

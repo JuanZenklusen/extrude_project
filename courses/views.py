@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
 from random import shuffle, sample
 
 
@@ -130,6 +130,18 @@ def play_lesson(request, slug, slug_l):
     # Manejar el caso en que lesson.pdf es None
     pdf_url = lesson.pdf.url if lesson.pdf else None
 
+    if lesson.zoom:
+        if lesson.day_time != None:
+            # Obtener la fecha y hora una hora antes y despues
+            one_hour_before = lesson.day_time - timedelta(hours = 1)
+            two_hours_after = lesson.day_time + timedelta(hours = 2)
+            delta_time_after = now - lesson.day_time
+            delta_time = lesson.day_time - now
+
+    minutes = timedelta(minutes=10) #variable que contiene 10 minutos
+    a_hour = timedelta(minutes=60) #variable que contiene 60 minutos
+    two_hours = timedelta(minutes=120) #variable que contiene 120 minutos
+
     return render(request, 'play_lesson.html', {'course': course, 
                                                 'modules': modules, 
                                                 'lesson': lesson,
@@ -142,8 +154,14 @@ def play_lesson(request, slug, slug_l):
                                                 'matricule': matricule,
                                                 'homework': homework,
                                                 'now': now,
-                                                'homework_delivered': homework_delivered})
-
+                                                'homework_delivered': homework_delivered,
+                                                'one_hour_before': one_hour_before,
+                                                'delta_time': delta_time,
+                                                'a_hour': a_hour,
+                                                'delta_time_after': delta_time_after,
+                                                'minutes': minutes,
+                                                'two_hours_after': two_hours_after,
+                                                'two_hours': two_hours})
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -151,7 +169,6 @@ def adm_courses(request):
     courses = Courses.objects.all
 
     return render(request, 'adm_courses.html', {'courses': courses,})
-
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -206,7 +223,6 @@ def add_course(request):
         return redirect('adm_courses')
 
     return render(request, 'partials/adm_course/add_course.html', {})
-
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -316,11 +332,23 @@ def add_lesson(request, id):
         text1 = request.POST.get('text1')
         text2 = request.POST.get('text2')
         text3 = request.POST.get('text3')
+
+        if 'check_zoom' in request.POST:
+            zoom = True
+        else:
+            zoom = False
+        link_zoom = request.POST.get('l_zoom')
+        day_time = request.POST.get('day_time')
+        if day_time != "":
+            if day_time:
+                day_time = timezone.datetime.strptime(day_time, '%Y-%m-%dT%H:%M')
+
+
         class_materials = request.POST.get('class_materials')
         module_ = module
-
         
-        new_lesson = Lessons.objects.create(
+        if day_time != "":
+            new_lesson = Lessons.objects.create(
             title = title,
             subtitle = subtitle,
             nro_order = nro_order,
@@ -329,6 +357,25 @@ def add_lesson(request, id):
             text1 = text1,
             text2 = text2,
             text3 = text3,
+            zoom = zoom,
+            link_zoom = link_zoom,
+            day_time = day_time,
+            class_materials = class_materials,
+            module = module_
+        )
+        else:
+            new_lesson = Lessons.objects.create(
+            title = title,
+            subtitle = subtitle,
+            nro_order = nro_order,
+            video = video,
+            pdf = pdf,
+            text1 = text1,
+            text2 = text2,
+            text3 = text3,
+            zoom = zoom,
+            link_zoom = link_zoom,
+            day_time = None,
             class_materials = class_materials,
             module = module_
         )
@@ -361,6 +408,17 @@ def edit_lesson(request, id):
         text1 = request.POST.get('text1')
         text2 = request.POST.get('text2')
         text3 = request.POST.get('text3')
+
+        if 'check_zoom' in request.POST:
+            zoom = True
+        else:
+            zoom = False
+        link_zoom = request.POST.get('l_zoom')
+        day_time = request.POST.get('day_time')
+        if day_time != "":
+            if day_time:
+                day_time = timezone.datetime.strptime(day_time, '%Y-%m-%dT%H:%M')
+        
         class_materials = request.POST.get('class_materials')
 
         lesson.title = title
@@ -370,6 +428,12 @@ def edit_lesson(request, id):
         lesson.text1 = text1
         lesson.text2 = text2
         lesson.text3 = text3
+        lesson.zoom = zoom
+        lesson.link_zoom = link_zoom
+        if day_time != "":
+            lesson.day_time = day_time
+        else:
+            lesson.day_time = None
         lesson.class_materials = class_materials
         lesson.save()
 
