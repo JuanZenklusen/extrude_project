@@ -137,6 +137,16 @@ def play_lesson(request, slug, slug_l):
             two_hours_after = lesson.day_time + timedelta(hours = 2)
             delta_time_after = now - lesson.day_time
             delta_time = lesson.day_time - now
+        else:
+            one_hour_before = ""
+            delta_time = ""
+            delta_time_after = ""
+            two_hours_after = ""
+    else:
+        one_hour_before = ""
+        delta_time = ""
+        delta_time_after = ""
+        two_hours_after = ""
 
     minutes = timedelta(minutes=10) #variable que contiene 10 minutos
     a_hour = timedelta(minutes=60) #variable que contiene 60 minutos

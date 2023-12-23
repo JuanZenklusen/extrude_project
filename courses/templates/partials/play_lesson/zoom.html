@@ -7,38 +7,40 @@
 </style>
 
 {% if lesson.zoom == True %}
-    {% if lesson.day_time > now %}
-        {% if delta_time > a_hour %}
-            <h3 class="mt-4 mb-4 text-center">La clase dará inicio el día: {{lesson.day_time}}</h3>
-        {% else %}
-            <div class="row">
-                <video autoplay loop muted>
-                    <source src="/static/loop_clase_por_iniciar.mp4" type="video/mp4">
-                </video>
-            </div>
-            {% if minutes > delta_time %}
-                <div class="row">
-                    <a target="_blank" class="mt-4 mb-4 btn btn-primary" style="text-decoration: none; font-size: 20px;" href="{{lesson.link_zoom}}">Ir al zoom - Inicio de la clase: {{ lesson.day_time }}</a>
-                </div>
+    {% if lesson.day_time != None %}
+        {% if lesson.day_time > now %}
+            {% if delta_time > a_hour %}
+                <h3 class="mt-4 mb-4 text-center">La clase dará inicio el día: {{lesson.day_time}}</h3>
             {% else %}
                 <div class="row">
-                    <a class="mt-4 mb-4 btn btn-secondary disabled" style="text-decoration: none; font-size: 20px;" href="#">Inicio de la clase: {{ lesson.day_time }}</a>
+                    <video autoplay loop muted>
+                        <source src="/static/loop_clase_por_iniciar.mp4" type="video/mp4">
+                    </video>
                 </div>
+                {% if minutes > delta_time %}
+                    <div class="row">
+                        <a target="_blank" class="mt-4 mb-4 btn btn-primary" style="text-decoration: none; font-size: 20px;" href="{{lesson.link_zoom}}">Ir al zoom - Inicio de la clase: {{ lesson.day_time }}</a>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <a class="mt-4 mb-4 btn btn-secondary disabled" style="text-decoration: none; font-size: 20px;" href="#">Inicio de la clase: {{ lesson.day_time }}</a>
+                    </div>
+                {% endif %}
             {% endif %}
+        {% elif two_hours > delta_time_after %}
+            <p>La clase está en vivo</p>
+            <div class="row">
+                <video autoplay loop muted>
+                    <source src="/static/loop_clase_en_vivo.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="row">
+                <a target="_blank" class="mt-4 mb-4 btn btn-danger" style="text-decoration: none; font-size: 20px;" href="{{lesson.link_zoom}}">Ir al zoom - Inicio de la clase: {{ lesson.day_time }}</a>
+            </div>
+        {% else %}
+            <div class="row">
+                <h3 target="_blank" class="mt-4 mb-4 text-center">La clase ha finalizado. Prónto nuestros moderadores cargaran la clase grabada para que la puedas repasar.</h3>
+            </div>
         {% endif %}
-    {% elif two_hours > delta_time_after %}
-        <p>La clase está en vivo</p>
-        <div class="row">
-            <video autoplay loop muted>
-                <source src="/static/loop_clase_en_vivo.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div class="row">
-            <a target="_blank" class="mt-4 mb-4 btn btn-danger" style="text-decoration: none; font-size: 20px;" href="{{lesson.link_zoom}}">Ir al zoom - Inicio de la clase: {{ lesson.day_time }}</a>
-        </div>
-    {% else %}
-        <div class="row">
-            <h3 target="_blank" class="mt-4 mb-4 text-center">La clase ha finalizado. Prónto nuestros moderadores cargaran la clase grabada para que la puedas repasar.</h3>
-        </div>
     {% endif %}
 {% endif %}
