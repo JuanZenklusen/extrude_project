@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from profiles.views import terms_conditions
 
 urlpatterns = [
     path('', include('profiles.urls')),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('exams/', include('exams.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('reglamento_de_condiciones_de_acceso_participacion_y_uso_institutodigitaltech', terms_conditions, name='terms_conditions'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import user_passes_test
 from django.views.generic import ListView
 from .models import ModuleRating
-from .models import Courses, Modules, Lessons, Matricula, Exam, Question, Option, Commission, StudentExamAttempt, Homework, SubmitHomework, QuestionsAndAnswers
+from .models import Courses, Modules, Lessons, Matricula, Exam, Question, Option, Commission, StudentExamAttempt, Homework, SubmitHomework, QuestionsAndAnswers, SendTicket, Notifications
 from .calc import calcular_porcentaje_avance
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 from datetime import timedelta, datetime
 from random import shuffle, sample
+from django.core.mail import send_mail
 
 
 def str_price(price):
@@ -22,10 +23,8 @@ def str_price(price):
     return nro
 
 
-
 def no_matriculado(request):
     return render(request, 'no_matriculado.html', {})
-
 
 
 def courses(request):
@@ -43,7 +42,6 @@ def courses(request):
             course.formatted_price_payment_installments = None
 
     return render(request, 'courses.html', {'courses': courses})
-
 
 
 def view_course(request, slug):
@@ -69,7 +67,6 @@ def view_course(request, slug):
 
     
     return render(request, 'course_slug.html', {'course': course, 'modules': modules, 'matricule': matricule, 'exams': exams})
-
 
 
 @login_required
@@ -279,7 +276,6 @@ def adm_course(request, id):
     return render(request, 'partials/adm_course/edit_course.html', {'course': course})
 
 
-
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
 def adm_modules_lessons(request, id):
     course = get_object_or_404(Courses, id=id)
@@ -396,7 +392,6 @@ def add_lesson(request, id):
 
 
     return render(request, 'partials/adm_course/adm_modules_lessons/add_lesson.html', {'module': module, 'course': course})
-
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -529,7 +524,6 @@ def edit_commission(request, id):
         return redirect('adm_courses')
 
     return render(request, 'partials/commissions/edit_commission.html', {'course': course, 'commission': commission})
-
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='index')
@@ -791,3 +785,38 @@ def view_submited_homeworks(request, id):
     submited_homework = SubmitHomework.objects.filter(homework = homework)
 
     return render(request, 'partials/homework/view_submited_homeworks.html', {'homework': homework, 'submited_homework': submited_homework})
+
+
+
+@login_required
+def send_ticket(request):
+    visible_courses = Courses.objects.filter(visible = True)
+    false_course = Courses.objects.get(link_mp = "*")
+    false_commission = Commission.objects.filter(course = false_course).first()
+    
+    if request.method == 'POST':
+
+        course_id = request.POST.get('course')
+        course_instance = Courses.objects.get(id=course_id)
+
+        new_matricula = Matricula.objects.create(
+            commission = false_commission,
+            user = request.user,
+        )
+
+        new_send_ticket = SendTicket.objects.create(
+            course = course_instance,
+            user = request.user,
+            ticket = request.FILES.get('file'),
+            message = request.POST.get('message')
+        )
+
+        new_notification = Notifications.objects.create(
+            title = 'Nueva matriculación para validar',
+            text = f'Crear una nueva matricula para: {request.user} para el curso: {course_instance}. {request.POST.get("message")}',
+            user = request.user
+        )
+
+        return redirect('profile')
+
+    return render(request, 'send_ticket.html', {'visible_courses': visible_courses})

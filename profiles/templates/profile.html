@@ -116,11 +116,27 @@
         </div>
     </form>    
 </div>
+<div class="container">
+    <hr>
+</div>
+{% if false_matricula %}
+    {% for f_matricula in false_matricula %}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                {{ f_matricula.commission.course.name }}
+            </div>
+            <div class="card-body">
+                Pronto se validará la matricula de tu curso. Nuestros administradores te darán acceso una vez que hayan validado el comprobante de pago. Ante cualquier consulta nos podes contactar a admin@digitaltech.com
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
 
 {% if matriculas %}
 <div class="container">
-    <hr>
-    <h1 class="text-center">Tus cursos: </h1>
+    <h1 class="mt-4 text-center">Tus cursos: </h1>
 </div>
     {% for matricula in matriculas %}
     <div class="container">

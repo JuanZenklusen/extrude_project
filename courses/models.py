@@ -377,3 +377,33 @@ class QuestionsAndAnswers(models.Model):
 
     def __str__(self):
         return f'({self.pk}) {self.matricula}-{self.created_at}'
+
+
+class SendTicket(models.Model):
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ticket = models.FileField(blank=False, null=False, upload_to='tickets')
+    message = models.CharField(max_length=400, default="", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'User: {self.user} - Course: {self.course}'
+    
+    def save(self, *args, **kwargs):
+        if self.ticket:
+            base_name, extension = os.path.splitext(self.ticket.name)
+            unique_name = f"{base_name}-{timezone.now().strftime('%Y%m%d%H%M%S')}{extension}"
+            self.ticket.name = unique_name
+
+        super().save(*args, **kwargs)
+
+
+class Notifications(models.Model):
+    title = models.CharField(max_length=400, default="", null=True, blank=True)
+    text = models.CharField(max_length=400, default="", null=True, blank=True)
+    read = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option, StudentExamAttempt, Homework, SubmitHomework, QuestionsAndAnswers
+from .models import Courses, Modules, Lessons, Matricula, Commission, Exam, Question, Option, StudentExamAttempt, Homework, SubmitHomework, QuestionsAndAnswers, SendTicket, Notifications
 
 class CoursesAdmin(admin.ModelAdmin):
     fields = ('name', 'description', 'price', 'payment_installments', 'price_payment_installments',
@@ -123,3 +123,16 @@ class QuestionsAndAnswersAdmin(admin.ModelAdmin):
     readonly_fields = ('matricula', 'exam', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'created_at')
 
 admin.site.register(QuestionsAndAnswers, QuestionsAndAnswersAdmin)
+
+
+class SendTicketAdmin(admin.ModelAdmin):
+    fields = ['course', 'user', 'ticket', 'message', 'created_at']
+
+admin.site.register(SendTicket, SendTicketAdmin)
+
+
+class NotificationsAdmin(admin.ModelAdmin):
+    fields = ['title', 'text', 'read', 'user']
+    readonly_fields = ('created_at',)
+
+admin.site.register(Notifications, NotificationsAdmin)

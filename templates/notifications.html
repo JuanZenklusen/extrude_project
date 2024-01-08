@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Notificaiones {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <h1 class="mt-4 mb-4 text-center">Notificaciones</h1>
+    <h2>Nuevas notificaciones</h2>
+    <div class="row">
+        <div style="font-weight: 800; color: white;" class="pt-2 pb-2 col text-center border bg-dark">Título</div>
+        <div style="font-weight: 800; color: white;" class="pt-2 pb-2 col text-center border bg-dark">Texto</div>
+        <div style="font-weight: 800; color: white;" class="pt-2 pb-2 col text-center border bg-dark">Visto?</div>
+        <div style="font-weight: 800; color: white;" class="pt-2 pb-2 col text-center border bg-dark">Usuario</div>
+        <div style="font-weight: 800; color: white;" class="pt-2 pb-2 col text-center border bg-dark">Fecha</div>
+    </div>
+    {% for not_viewed in not_viewed_notifications %}
+        <div class="row">
+            <div class="pt-2 pb-2 col border">
+                {{ not_viewed.title }}
+            </div>
+            <div class="pt-2 pb-2 col border">
+                {{ not_viewed.text }}
+            </div>
+            <div class="pt-2 pb-2 col border">
+                {{ not_viewed.read }}
+            </div>
+            <div class="pt-2 pb-2 col border">
+                {{ not_viewed.user }}
+            </div>
+            <div class="pt-2 pb-2 col border">
+                {{ not_viewed.created_at }}
+            </div>
+        </div>
+    {% endfor %}
+    <hr>
+    <h3 class="text-start">Notificaciones vistas</h3>
+    {% for viewed in viewed_notifications %}
+        <div class="row">
+            <div class="pt-2 pb-2 col">
+                {{ viewed.title }}
+            </div>
+            <div class="pt-2 pb-2 col">
+                {{ viewed.text }}
+            </div>
+            <div class="pt-2 pb-2 col">
+                {{ viewed.read }}
+            </div>
+            <div class="pt-2 pb-2 col">
+                {{ viewed.user }}
+            </div>
+            <div class="pt-2 pb-2 col">
+                {{ viewed.created_at }}
+            </div>
+
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

@@ -725,3 +725,12 @@ input.form-control:-webkit-autofill:focus {
     box-shadow: 0px 0px 15px gray;
     scale: 1.01;
 }
+
+.notification{
+    color: white;
+    position: relative;
+    top: -4px;
+    padding: 2px;
+    font-size: 14px;
+    border-radius: 50%;
+}

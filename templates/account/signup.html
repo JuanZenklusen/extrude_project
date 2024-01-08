@@ -69,22 +69,20 @@
 
 <div class="card-allauth">
 
-
     <div class="row text-center">
     {% element h1 %}
         {% trans "Sign Up" %}
     {% endelement %}
     </div>
 
-
-    <div style="height: 50px; border-radius: 25px; width: 90%; margin: auto; background-color: rgb(226, 226, 226); transition: .5s;" class="row mt-2 mb-2 bg-primary hover">
+    <!-- <div style="height: 50px; border-radius: 25px; width: 90%; margin: auto; background-color: rgb(226, 226, 226); transition: .5s;" class="row mt-2 mb-2 bg-primary hover">
         <div class="col-1">
             <img style="height: 46px; border-radius: 23px; position: relative; left: -10px; top: 2px;" src="/static/google.png" alt="">
         </div>
         <div style="padding-top: 11px;" class="col">
             {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
         </div>
-    </div>
+    </div> -->
 
     <p class="text-center">
         {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}

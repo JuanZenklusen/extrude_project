@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm, ContactForm
 from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import get_object_or_404
-from courses.models import Courses, Matricula, Modules, Lessons, Exam, Commission
+from courses.models import Courses, Matricula, Modules, Lessons, Exam, Commission, Notifications
 from courses.calc import calcular_porcentaje_avance
 from django.db.models import Count
 from courses.cert_gen import generate_certf
@@ -124,7 +124,11 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
 
 @login_required
 def profile(request):
-    matriculas = Matricula.objects.filter(user=request.user)
+    matriculas = Matricula.objects.filter(user=request.user).exclude(commission__course__link_mp='*')
+    try:
+        false_matricula = Matricula.objects.filter(user=request.user, commission__course__link_mp='*')
+    except:
+        false_matricula = False
     commissions = Commission.objects.filter(matricula__in=matriculas)
     courses = Courses.objects.filter(commission__in=commissions)
     exams = Exam.objects.filter(course__in=courses)
@@ -165,6 +169,7 @@ def profile(request):
                                             'profile_form': profile_form, 
                                             'matriculas': matriculas,
                                             'exams': exams,
+                                            'false_matricula': false_matricula
                                             })
 
 
@@ -210,3 +215,13 @@ def view_cert(request, slug):
 
     else:
         return redirect('profile')
+
+
+def notifications(request):
+    viewed_notifications = Notifications.objects.filter(read = True)
+    not_viewed_notifications = Notifications.objects.filter(read = False)
+    return render(request, 'notifications.html', {'not_viewed_notifications': not_viewed_notifications, 'viewed_notifications': viewed_notifications})
+
+
+def terms_conditions(request):
+    return render(request, 'terms_conditions.html', {})

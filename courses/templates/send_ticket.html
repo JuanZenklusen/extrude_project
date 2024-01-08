@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block 'title' %} Adjuntar ticket de pago {% endblock %}
+
+{% block 'content' %}
+
+<div class="container">
+    <div class="mt-5 mb-5 row">
+        <h2>Para finalizar y agilizar su matriculación, adjunte el comprobante de pago. Luego los administradores constatarán que todo esté correcto.</h2><hr>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <label class="form-label" for="m_user">Curso al que se inscribió:</label>
+                        <select class="mb-4 form-control border-3 border-primary-subtle" name="course" id="s_user">
+                        <option value=""></option>
+                        {% for course in visible_courses %} <option value="{{ course.id }}">{{ course.name }}</option> {% endfor %}</select>
+            </div>
+
+            <div class="row">
+                <label class="form-label" for="t_file">Adjuntar comprobante de pago</label>
+                <input class="form-control border-3 border-primary-subtle" type="file" id="t_file" name="file" required>
+            </div>
+
+            <div class="row">
+                <label class="mt-4 form-label" for="s_message">Aclaraciones</label>
+                <input class="mb-4 form-control border-3 border-primary-subtle" id="s_message" type="text" name="message" autocomplete="off">
+            </div>
+
+            <input class="btn btn-primary" type="submit" value="Enviar comprobante">
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
