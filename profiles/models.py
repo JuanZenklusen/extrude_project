@@ -12,6 +12,7 @@ class Profile(models.Model):
     day = models.IntegerField(null=True, blank=True,)
     month = models.IntegerField(null=True, blank=True,)
     year = models.IntegerField(null=True, blank=True,)
+    terms_conditions = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username

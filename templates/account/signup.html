@@ -98,6 +98,15 @@
                        name="{{ redirect_field_name }}"
                        value="{{ redirect_field_value }}" />
             {% endif %}
+            <div class="row">
+                <div style="transform: scale(1.5); margin-left: 10px; color: red;" class="col-auto pt-2">
+                    <input required type="checkbox" id="checkboxDeclaracion" onchange="toggleSubmitButton()">
+                </div>
+                <div style=" font-size: 16px;" class="col">
+                    Declaro que leí y acepto el <a style="color: blue; font-size: 16px; text-decoration: underline;" href="{% url 'terms_conditions' %}" target="_blank" >Reglamento de condiciones de acceso, participación y uso del Campus Virtual del Instituto DigitalTech.</a>
+                </div>
+            </div>
+            <br>
         {% endslot %}
         {% slot actions %}
             {% element button tags="prominent,signup" type="submit" %}
@@ -118,8 +127,23 @@
     }
 
 });
+    var boton = document.querySelector('button');
+    boton.id = 'miBoton';
+    boton.className = "btn btn-success disabled"
+</script>
+<script>
+    function toggleSubmitButton() {
+        var checkbox = document.getElementById("checkboxDeclaracion");
+        var submitButton = document.getElementById("miBoton");
 
-
+        if (checkbox.checked) {
+                // Si el checkbox está marcado, quitar la clase "disabled"
+                submitButton.classList.remove("disabled");
+            } else {
+                // Si el checkbox no está marcado, agregar la clase "disabled"
+                submitButton.classList.add("disabled");
+            }
+    }
 </script>
 
 {% endblock %}
